@@ -139,7 +139,6 @@
       html, body { height: auto; overflow: auto; }
       body { cursor: auto; }
 
-      #rope-canvas { display: none; }
 
       .page {
         position: relative;
@@ -377,7 +376,69 @@
 
       document.addEventListener('mouseleave', () => { active = false; });
 
+      // ── Mobile accelerometer dot ────────────────────
+      const onMobile = window.matchMedia('(max-width: 599px)').matches;
+      let dotX = W / 2, dotY = H / 2;
+      let dotVx = 0, dotVy = 0;
+      let tiltX = 0, tiltY = 0;
+
+      if (onMobile) {
+        // Dot starts in center
+        mouseX = dotX; mouseY = dotY;
+        lastX = dotX;  lastY = dotY;
+        active = true;
+
+        function handleOrientation(e) {
+          tiltX = (e.gamma || 0);          // left-right: -90 to 90
+          tiltY = (e.beta  || 90) - 90;    // fwd-back adjusted for upright hold
+        }
+
+        function setupOrientation() {
+          if (typeof DeviceOrientationEvent !== 'undefined' &&
+              typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+              .then(s => { if (s === 'granted') window.addEventListener('deviceorientation', handleOrientation); })
+              .catch(() => {});
+          } else {
+            window.addEventListener('deviceorientation', handleOrientation);
+          }
+        }
+
+        document.addEventListener('touchstart', setupOrientation, { once: true });
+      }
+
+      function updateMobileDot() {
+        dotVx += tiltX * 0.04;
+        dotVy += tiltY * 0.04;
+        dotVx *= 0.97;
+        dotVy *= 0.97;
+        dotX  += dotVx;
+        dotY  += dotVy;
+
+        const R = 4;
+        if (dotX < R)     { dotX = R;     dotVx =  Math.abs(dotVx) * 0.55; }
+        if (dotX > W - R) { dotX = W - R; dotVx = -Math.abs(dotVx) * 0.55; }
+        if (dotY < R)     { dotY = R;     dotVy =  Math.abs(dotVy) * 0.55; }
+        if (dotY > H - R) { dotY = H - R; dotVy = -Math.abs(dotVy) * 0.55; }
+
+        // Add trail nodes
+        const dx = dotX - lastX, dy = dotY - lastY;
+        const dist = Math.hypot(dx, dy);
+        if (dist >= SEG_LEN) {
+          const steps = Math.ceil(dist / SEG_LEN);
+          for (let i = 1; i <= steps; i++) {
+            const t = i / steps;
+            nodes.push({ x: lastX + dx * t, y: lastY + dy * t });
+          }
+          lastX = dotX; lastY = dotY;
+        }
+
+        mouseX = dotX;
+        mouseY = dotY;
+      }
+
       function loop() {
+        if (onMobile) updateMobileDot();
         ctx.clearRect(0, 0, W, H);
 
         if (nodes.length >= 2) {
