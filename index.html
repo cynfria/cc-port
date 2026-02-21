@@ -221,6 +221,37 @@
       border-radius: 4px;
     }
 
+    /* ── Lil Guy overlay ────────────────────────────── */
+    .lilguy-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.hovering-lilguy .lilguy-overlay { opacity: 1; }
+
+    body.hovering-lilguy .bio,
+    body.hovering-lilguy .nav__col h2,
+    body.hovering-lilguy .nav__col ul li a { opacity: 0; }
+
+    body.hovering-lilguy #nav-lilguy {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .lilguy-overlay video {
+      max-width: 60vw;
+      max-height: 70vh;
+      border-radius: 4px;
+    }
+
     /* ── Pixelation tool overlay ─────────────────────── */
     .pixelation-overlay {
       position: fixed;
@@ -326,6 +357,9 @@
   <div class="jello-overlay">
     <video src="jello.mp4" autoplay loop muted playsinline></video>
   </div>
+  <div class="lilguy-overlay">
+    <video src="lilguy.mp4" autoplay loop muted playsinline></video>
+  </div>
   <div class="pixelation-overlay">
     <video src="pixelation-tool.mp4" autoplay loop muted playsinline></video>
   </div>
@@ -354,7 +388,7 @@
           <ul>
             <li><a href="#" id="nav-pixelation">pixelation tool</a></li>
             <li><a href="https://will-it-jello.vercel.app/" target="_blank" id="nav-jello">will it jello</a></li>
-            <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank">lil guy quiz</a></li>
+            <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank" id="nav-lilguy">lil guy quiz</a></li>
             <li><a href="#">dog-e-dex</a></li>
           </ul>
           <ul class="work-sub-list block-sub-list">
@@ -538,6 +572,11 @@
       }
 
       loop();
+
+      // ── Lil Guy hover ───────────────────────────────
+      const navLilguy = document.getElementById('nav-lilguy');
+      navLilguy.addEventListener('mouseenter', () => document.body.classList.add('hovering-lilguy'));
+      navLilguy.addEventListener('mouseleave', () => document.body.classList.remove('hovering-lilguy'));
 
       // ── Jello hover ─────────────────────────────────
       const navJello = document.getElementById('nav-jello');
