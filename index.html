@@ -136,15 +136,33 @@
 
     /* ── Responsive ──────────────────────────────────── */
     @media (max-width: 599px) {
+      html, body { height: auto; overflow: auto; }
       body { cursor: auto; }
 
-      .bio__title,
-      .bio__sub { font-size: 26px; }
+      #rope-canvas { display: none; }
+
+      .page {
+        position: relative;
+        padding: 8vh 5vw 8vh;
+      }
+
+      .bio {
+        position: relative;
+        top: auto; left: auto;
+        max-width: 90vw;
+        margin-bottom: 120px;
+      }
 
       .nav {
+        position: relative;
+        bottom: auto; left: auto;
+        width: 100%;
         grid-template-columns: repeat(2, 1fr);
         gap: 28px 0;
       }
+
+      .bio__title,
+      .bio__sub { font-size: 26px; }
     }
 
     @media (min-width: 600px) and (max-width: 899px) {
