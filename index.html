@@ -190,6 +190,39 @@
     body.hovering-stripe .block-overlay,
     body.hovering-airbnb .block-overlay { opacity: 1; }
 
+    /* ── Pixelation tool overlay ─────────────────────── */
+    .pixelation-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.hovering-pixelation .pixelation-overlay { opacity: 1; }
+
+    body.hovering-pixelation .bio,
+    body.hovering-pixelation .nav__col h2,
+    body.hovering-pixelation .nav__col ul li a {
+      opacity: 0;
+    }
+
+    body.hovering-pixelation #nav-pixelation {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .pixelation-overlay video {
+      max-width: 60vw;
+      max-height: 70vh;
+      border-radius: 4px;
+    }
+
     /* Page content sits above overlay so text remains interactive */
     .page {
       z-index: 501;
@@ -259,6 +292,9 @@
   <canvas id="rope-canvas"></canvas>
 
   <div class="block-overlay"></div>
+  <div class="pixelation-overlay">
+    <video src="pixelation-tool.mp4" autoplay loop muted playsinline></video>
+  </div>
 
   <main class="page">
     <section class="bio">
@@ -282,7 +318,7 @@
         <h2>playground</h2>
         <div class="nav__col-body">
           <ul>
-            <li><a href="#">pixelation tool</a></li>
+            <li><a href="#" id="nav-pixelation">pixelation tool</a></li>
             <li><a href="https://will-it-jello.vercel.app/" target="_blank">will it jello</a></li>
             <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank">lil guy quiz</a></li>
             <li><a href="#">dog-e-dex</a></li>
@@ -468,6 +504,11 @@
       }
 
       loop();
+
+      // ── Pixelation tool hover ───────────────────────
+      const navPixelation = document.getElementById('nav-pixelation');
+      navPixelation.addEventListener('mouseenter', () => document.body.classList.add('hovering-pixelation'));
+      navPixelation.addEventListener('mouseleave', () => document.body.classList.remove('hovering-pixelation'));
 
       // ── Block hover state ──────────────────────────
       const navBlock = document.getElementById('nav-block');
