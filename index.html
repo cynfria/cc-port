@@ -44,6 +44,17 @@
       cursor: none;
     }
 
+    @media (prefers-color-scheme: dark) {
+      body { background: #0D0D0D; }
+
+      .bio__title { color: #efefef; }
+      .bio__sub   { color: #555; }
+
+      .nav__col h2          { color: #efefef; }
+      .nav__col ul li a     { color: #555; }
+      .nav__col ul li a:hover { color: #efefef; }
+    }
+
     #rope-canvas {
       position: fixed;
       inset: 0;
@@ -67,6 +78,29 @@
     @media (min-width: 900px) {
       .bio {
         max-width: 45vw;
+      }
+    }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 599px) {
+      body { cursor: auto; }
+
+      .bio__title,
+      .bio__sub { font-size: 26px; }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 0;
+      }
+    }
+
+    @media (min-width: 600px) and (max-width: 899px) {
+      .bio__title,
+      .bio__sub { font-size: 34px; }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 0;
       }
     }
 
