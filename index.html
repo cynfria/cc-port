@@ -98,29 +98,6 @@
       letter-spacing: -0.02em;
     }
 
-    /* ── Responsive ──────────────────────────────────── */
-    @media (max-width: 599px) {
-      body { cursor: auto; }
-
-      .bio__title,
-      .bio__sub { font-size: 26px; }
-
-      .nav {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 28px 0;
-      }
-    }
-
-    @media (min-width: 600px) and (max-width: 899px) {
-      .bio__title,
-      .bio__sub { font-size: 34px; }
-
-      .nav {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 28px 0;
-      }
-    }
-
     .nav {
       position: absolute;
       bottom: calc(6vh + 24px);
@@ -155,6 +132,29 @@
 
     .nav__col ul li a:hover {
       color: #111;
+    }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 599px) {
+      body { cursor: auto; }
+
+      .bio__title,
+      .bio__sub { font-size: 26px; }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 0;
+      }
+    }
+
+    @media (min-width: 600px) and (max-width: 899px) {
+      .bio__title,
+      .bio__sub { font-size: 34px; }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 0;
+      }
     }
 
     /* ── Block hover overlay ─────────────────────────── */
