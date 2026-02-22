@@ -467,6 +467,7 @@
       let dotX = W / 2, dotY = H / 2;
       let dotVx = 0, dotVy = 0;
       let tiltX = 0, tiltY = 0;
+      let showTapHint = true;
 
       if (onMobile) {
         // Dot starts in center
@@ -496,7 +497,10 @@
         }
 
         // Trigger on first tap anywhere — iOS treats click as a valid user gesture
-        document.addEventListener('click', setupOrientation, { once: true });
+        document.addEventListener('click', () => {
+          setupOrientation();
+          showTapHint = false;
+        }, { once: true });
       }
 
       function updateMobileDot() {
@@ -554,6 +558,12 @@
           ctx.arc(mouseX, mouseY, 4, 0, Math.PI * 2);
           ctx.fillStyle = '#E5500B';
           ctx.fill();
+        }
+
+        if (onMobile && showTapHint) {
+          ctx.font = '11px "Space Grotesk", sans-serif';
+          ctx.fillStyle = '#E5500B';
+          ctx.fillText('tap', mouseX + 10, mouseY + 4);
         }
 
         requestAnimationFrame(loop);
