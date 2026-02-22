@@ -401,7 +401,7 @@
       position: fixed;
       inset: 0;
       z-index: 1500;
-      background: #fff;
+      background: transparent;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -410,17 +410,17 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s ease;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .easter-egg { background: #0D0D0D; }
-      .easter-egg__message { color: #efefef; }
-      .easter-egg__return:hover { color: #efefef; }
+      cursor: auto;
     }
 
     body.easter-egg-active .easter-egg {
       opacity: 1;
       pointer-events: all;
+    }
+
+    body.easter-egg-active .page {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .easter-egg__message {
@@ -433,14 +433,14 @@
       font-family: monospace;
       font-size: 14px;
       line-height: 1.5;
-      color: #E5500B;
+      color: #111;
       text-align: left;
     }
 
     .easter-egg__return {
       font-size: 14px;
       font-weight: 300;
-      color: #bbb;
+      color: rgba(0,0,0,0.4);
       text-decoration: none;
       transition: color 0.12s ease;
     }
