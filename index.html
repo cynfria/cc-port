@@ -820,6 +820,9 @@
         lastX = null; lastY = null;
       });
 
+      // Force-load all videos immediately regardless of preload hint
+      document.querySelectorAll('video').forEach(v => v.load());
+
       let frameCount = 0;
 
       function loop() {
