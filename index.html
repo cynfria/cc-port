@@ -330,6 +330,36 @@
       border-radius: 4px;
     }
 
+    /* ── Asian snack rugs overlay ───────────────────── */
+    .snackrugs-overlay {
+      position: fixed;
+      inset: 0;
+      background: #810806;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    body.hovering-snackrugs .snackrugs-overlay { opacity: 1; }
+
+    body.hovering-snackrugs .bio,
+    body.hovering-snackrugs .nav__col h2,
+    body.hovering-snackrugs .nav__col ul li a { opacity: 0; }
+
+    body.hovering-snackrugs #nav-snackrugs {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .snackrugs-overlay .rug-img {
+      position: absolute;
+      width: 200px;
+      border-radius: 2px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      object-fit: cover;
+    }
+
     /* ── Crab overlay ───────────────────────────────── */
     .crab-overlay {
       position: fixed;
@@ -504,6 +534,18 @@
   <div class="scallion-overlay">
     <img src="scallion-pillows.JPG" alt="scallion pillows">
   </div>
+  <div class="snackrugs-overlay" id="snackrugs-overlay">
+    <img class="rug-img" src="snack-rugs/6C69FA4E-FC6D-48D9-838F-D65C2703075B.jpg">
+    <img class="rug-img" src="snack-rugs/99234D4B-A1EB-4CAA-935E-025589090975.jpg">
+    <img class="rug-img" src="snack-rugs/C1AD313A-A4F4-4D1C-8E03-5734444E2B6F.jpg">
+    <img class="rug-img" src="snack-rugs/IMG_1583.JPG">
+    <img class="rug-img" src="snack-rugs/IMG_3074.jpg">
+    <img class="rug-img" src="snack-rugs/IMG_6850.JPG">
+    <img class="rug-img" src="snack-rugs/IMG_7463.JPG">
+    <img class="rug-img" src="snack-rugs/IMG_9134.JPG">
+    <img class="rug-img" src="snack-rugs/IMG_9392.JPG">
+  </div>
+
   <div class="crab-overlay">
     <img src="crab.png" alt="6-7th century crab from peru">
   </div>
@@ -537,7 +579,7 @@
             <li><a href="#" id="nav-guppies">guppies</a></li>
             <li><a href="https://x.com/yescynfria/status/2016236887300776123" target="_blank" id="nav-crab">6-7th century crab</a></li>
             <li><a href="#" id="nav-scallion">scallion pillows</a></li>
-            <li><a href="#">asian snack rugs</a></li>
+            <li><a href="#" id="nav-snackrugs">asian snack rugs</a></li>
           </ul>
           <ul class="work-sub-list block-sub-list">
             <li>open source &amp; ai tooling</li>
@@ -802,6 +844,7 @@
         { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
         { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
         { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
+        { el: document.getElementById('nav-snackrugs'),  cls: 'hovering-snackrugs' },
         { el: document.getElementById('nav-guppies'),    cls: 'hovering-guppies'   },
         { el: document.getElementById('nav-scallion'),   cls: 'hovering-scallion'  },
         { el: document.getElementById('nav-crab'),       cls: 'hovering-crab'      },
@@ -813,6 +856,24 @@
 
       function clearAllHovers() {
         hoverItems.forEach(({ cls }) => document.body.classList.remove(cls));
+      }
+
+      function randomizeRugs() {
+        document.querySelectorAll('.rug-img').forEach(img => {
+          const top  = 5  + Math.random() * 72;
+          const left = 2  + Math.random() * 72;
+          const rot  = (Math.random() - 0.5) * 18;
+          img.style.top       = top  + 'vh';
+          img.style.left      = left + 'vw';
+          img.style.transform = `rotate(${rot}deg)`;
+        });
+      }
+      randomizeRugs();
+
+      const navSnackrugs = document.getElementById('nav-snackrugs');
+      if (navSnackrugs) {
+        navSnackrugs.addEventListener('mouseenter', randomizeRugs);
+        navSnackrugs.addEventListener('touchend',   randomizeRugs);
       }
 
       hoverItems.forEach(({ el, cls }) => {
