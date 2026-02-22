@@ -571,37 +571,40 @@
 
       loop();
 
-      // ── Lil Guy hover ───────────────────────────────
-      const navLilguy = document.getElementById('nav-lilguy');
-      navLilguy.addEventListener('mouseenter', () => document.body.classList.add('hovering-lilguy'));
-      navLilguy.addEventListener('mouseleave', () => document.body.classList.remove('hovering-lilguy'));
+      // ── Hover states (desktop: mouseenter/leave, mobile: tap toggle) ──
+      const hoverItems = [
+        { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
+        { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
+        { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
+        { el: document.getElementById('nav-block'),     cls: 'hovering-block'     },
+        { el: document.getElementById('nav-notion'),    cls: 'hovering-notion'    },
+        { el: document.getElementById('nav-stripe'),    cls: 'hovering-stripe'    },
+        { el: document.getElementById('nav-airbnb'),    cls: 'hovering-airbnb'    },
+      ];
 
-      // ── Jello hover ─────────────────────────────────
-      const navJello = document.getElementById('nav-jello');
-      navJello.addEventListener('mouseenter', () => document.body.classList.add('hovering-jello'));
-      navJello.addEventListener('mouseleave', () => document.body.classList.remove('hovering-jello'));
+      function clearAllHovers() {
+        hoverItems.forEach(({ cls }) => document.body.classList.remove(cls));
+      }
 
-      // ── Pixelation tool hover ───────────────────────
-      const navPixelation = document.getElementById('nav-pixelation');
-      navPixelation.addEventListener('mouseenter', () => document.body.classList.add('hovering-pixelation'));
-      navPixelation.addEventListener('mouseleave', () => document.body.classList.remove('hovering-pixelation'));
-
-      // ── Block hover state ──────────────────────────
-      const navBlock = document.getElementById('nav-block');
-      navBlock.addEventListener('mouseenter', () => document.body.classList.add('hovering-block'));
-      navBlock.addEventListener('mouseleave', () => document.body.classList.remove('hovering-block'));
-
-      const navNotion = document.getElementById('nav-notion');
-      navNotion.addEventListener('mouseenter', () => document.body.classList.add('hovering-notion'));
-      navNotion.addEventListener('mouseleave', () => document.body.classList.remove('hovering-notion'));
-
-      const navStripe = document.getElementById('nav-stripe');
-      navStripe.addEventListener('mouseenter', () => document.body.classList.add('hovering-stripe'));
-      navStripe.addEventListener('mouseleave', () => document.body.classList.remove('hovering-stripe'));
-
-      const navAirbnb = document.getElementById('nav-airbnb');
-      navAirbnb.addEventListener('mouseenter', () => document.body.classList.add('hovering-airbnb'));
-      navAirbnb.addEventListener('mouseleave', () => document.body.classList.remove('hovering-airbnb'));
+      hoverItems.forEach(({ el, cls }) => {
+        if (!el) return;
+        // Desktop
+        el.addEventListener('mouseenter', () => { clearAllHovers(); document.body.classList.add(cls); });
+        el.addEventListener('mouseleave', () => document.body.classList.remove(cls));
+        // Mobile: tap to open, tap again (anywhere) to close
+        el.addEventListener('touchend', e => {
+          if (!onMobile) return;
+          e.preventDefault();
+          if (document.body.classList.contains(cls)) {
+            clearAllHovers();
+          } else {
+            clearAllHovers();
+            document.body.classList.add(cls);
+            // Tap anywhere else to dismiss
+            document.addEventListener('touchend', clearAllHovers, { once: true });
+          }
+        });
+      });
 
       // Align sub-lists to their corresponding link's vertical position
       function alignSubLists() {
