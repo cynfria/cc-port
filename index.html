@@ -480,6 +480,8 @@
 <body>
   <canvas id="rope-canvas"></canvas>
 
+  <div id="easter-test" style="position:fixed;top:0;right:0;width:40px;height:40px;z-index:2000;cursor:default;"></div>
+
   <div class="easter-egg" id="easter-egg">
     <p class="easter-egg__message">wow you did it! here's a cat prize</p>
     <pre class="easter-egg__cat" id="easter-cat"></pre>
@@ -729,6 +731,8 @@
         }, 180);
       }
 
+      document.getElementById('easter-test').addEventListener('click', triggerEasterEgg);
+
       easterReturn.addEventListener('click', e => {
         e.preventDefault();
         document.body.classList.remove('easter-egg-active');
@@ -754,7 +758,7 @@
           }
           ctx.lineTo(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y);
           ctx.strokeStyle = '#E5500B';
-          ctx.lineWidth   = 50;
+          ctx.lineWidth   = 60;
           ctx.lineCap     = 'round';
           ctx.lineJoin    = 'round';
           ctx.stroke();
