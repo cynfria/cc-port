@@ -334,7 +334,7 @@
     .snackrugs-overlay {
       position: fixed;
       inset: 0;
-      background: #810806;
+      background: #230201;
       z-index: 500;
       opacity: 0;
       pointer-events: none;
@@ -354,10 +354,8 @@
 
     .snackrugs-overlay .rug-img {
       position: absolute;
-      width: 200px;
       border-radius: 2px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      object-fit: cover;
     }
 
     /* ── Crab overlay ───────────────────────────────── */
@@ -535,14 +533,15 @@
     <img src="scallion-pillows.JPG" alt="scallion pillows">
   </div>
   <div class="snackrugs-overlay" id="snackrugs-overlay">
-    <img class="rug-img" src="snack-rugs/botan.JPG">
-    <img class="rug-img" src="snack-rugs/cup-noodle.JPG">
-    <img class="rug-img" src="snack-rugs/haw.jpg">
-    <img class="rug-img" src="snack-rugs/hello-panda.jpg">
-    <img class="rug-img" src="snack-rugs/milktea.JPG">
-    <img class="rug-img" src="snack-rugs/pocky.jpg">
-    <img class="rug-img" src="snack-rugs/white-rabbit.jpg">
-    <img class="rug-img" src="snack-rugs/yakult.JPG">
+    <img class="rug-img" src="snack-rugs/white-rabbit.jpg"  style="left:22%;  top:0%;   width:18vw; transform:rotate(4deg)">
+    <img class="rug-img" src="snack-rugs/hello-panda.jpg"  style="left:44%;  top:11%;  width:19vw; transform:rotate(-3deg)">
+    <img class="rug-img" src="snack-rugs/milktea.JPG"      style="left:68%;  top:0%;   width:19vw; transform:rotate(3deg)">
+    <img class="rug-img" src="snack-rugs/haw.jpg"          style="left:1%;   top:27%;  width:19vw; transform:rotate(1deg)">
+    <img class="rug-img" src="snack-rugs/spam.jpeg"        style="left:52%;  top:47%;  width:21vw; transform:rotate(-2deg)">
+    <img class="rug-img" src="snack-rugs/yakult.JPG"       style="left:83%;  top:39%;  width:17vw; transform:rotate(3deg)">
+    <img class="rug-img" src="snack-rugs/cup-noodle.JPG"  style="left:27%;  top:53%;  width:19vw; transform:rotate(-2deg)">
+    <img class="rug-img" src="snack-rugs/botan.JPG"        style="left:3%;   top:68%;  width:19vw; transform:rotate(-2deg)">
+    <img class="rug-img" src="snack-rugs/pocky.jpg"        style="left:76%;  top:69%;  width:24vw; transform:rotate(3deg)">
   </div>
 
   <div class="crab-overlay">
@@ -855,24 +854,6 @@
 
       function clearAllHovers() {
         hoverItems.forEach(({ cls }) => document.body.classList.remove(cls));
-      }
-
-      function randomizeRugs() {
-        document.querySelectorAll('.rug-img').forEach(img => {
-          const top  = 5  + Math.random() * 72;
-          const left = 2  + Math.random() * 72;
-          const rot  = (Math.random() - 0.5) * 18;
-          img.style.top       = top  + 'vh';
-          img.style.left      = left + 'vw';
-          img.style.transform = `rotate(${rot}deg)`;
-        });
-      }
-      randomizeRugs();
-
-      const navSnackrugs = document.getElementById('nav-snackrugs');
-      if (navSnackrugs) {
-        navSnackrugs.addEventListener('mouseenter', randomizeRugs);
-        navSnackrugs.addEventListener('touchend',   randomizeRugs);
       }
 
       hoverItems.forEach(({ el, cls }) => {
