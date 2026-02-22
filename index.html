@@ -266,11 +266,73 @@
       border-radius: 4px;
     }
 
+    /* ── Guppies overlay ────────────────────────────── */
+    .guppies-overlay {
+      position: fixed;
+      inset: 0;
+      background: #ACBBD1;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.hovering-guppies .guppies-overlay { opacity: 1; }
+
+    body.hovering-guppies .bio,
+    body.hovering-guppies .nav__col h2,
+    body.hovering-guppies .nav__col ul li a { opacity: 0; }
+
+    body.hovering-guppies #nav-guppies {
+      opacity: 1;
+      color: #111;
+    }
+
+    .guppies-overlay img {
+      max-width: 60vw;
+      max-height: 70vh;
+      border-radius: 4px;
+    }
+
+    /* ── Scallion pillows overlay ───────────────────── */
+    .scallion-overlay {
+      position: fixed;
+      inset: 0;
+      background: #EAB457;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.hovering-scallion .scallion-overlay { opacity: 1; }
+
+    body.hovering-scallion .bio,
+    body.hovering-scallion .nav__col h2,
+    body.hovering-scallion .nav__col ul li a { opacity: 0; }
+
+    body.hovering-scallion #nav-scallion {
+      opacity: 1;
+      color: #111;
+    }
+
+    .scallion-overlay img {
+      max-width: 60vw;
+      max-height: 70vh;
+      border-radius: 4px;
+    }
+
     /* ── Crab overlay ───────────────────────────────── */
     .crab-overlay {
       position: fixed;
       inset: 0;
-      background: #9AB193;
+      background: #274035;
       z-index: 500;
       opacity: 0;
       pointer-events: none;
@@ -288,7 +350,7 @@
 
     body.hovering-crab #nav-crab {
       opacity: 1;
-      color: #111;
+      color: #fff;
     }
 
     .crab-overlay img {
@@ -375,6 +437,12 @@
   <div class="pixelation-overlay">
     <video src="pixelation-tool.mp4" autoplay loop muted playsinline></video>
   </div>
+  <div class="guppies-overlay">
+    <img src="guppies.jpg" alt="guppies">
+  </div>
+  <div class="scallion-overlay">
+    <img src="scallion-pillows.jpg" alt="scallion pillows">
+  </div>
   <div class="crab-overlay">
     <img src="crab.png" alt="6-7th century crab from peru">
   </div>
@@ -405,9 +473,9 @@
             <li><a href="https://will-it-jello.vercel.app/" target="_blank" id="nav-jello">will it jello</a></li>
             <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank" id="nav-lilguy">lil guy quiz</a></li>
             <li><a href="#">dog-e-dex</a></li>
-            <li><a href="#">guppies</a></li>
+            <li><a href="#" id="nav-guppies">guppies</a></li>
             <li><a href="https://x.com/yescynfria/status/2016236887300776123" target="_blank" id="nav-crab">6-7th century crab</a></li>
-            <li><a href="#">scallion pillows</a></li>
+            <li><a href="#" id="nav-scallion">scallion pillows</a></li>
             <li><a href="#">asian snack rugs</a></li>
           </ul>
           <ul class="work-sub-list block-sub-list">
@@ -614,6 +682,8 @@
         { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
         { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
         { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
+        { el: document.getElementById('nav-guppies'),    cls: 'hovering-guppies'   },
+        { el: document.getElementById('nav-scallion'),   cls: 'hovering-scallion'  },
         { el: document.getElementById('nav-crab'),       cls: 'hovering-crab'      },
         { el: document.getElementById('nav-block'),     cls: 'hovering-block'     },
         { el: document.getElementById('nav-notion'),    cls: 'hovering-notion'    },
