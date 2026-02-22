@@ -115,29 +115,7 @@
       color: #111;
     }
 
-    /* ── Motion button (mobile only) ────────────────── */
-    #motion-btn {
-      display: none;
-      position: fixed;
-      bottom: 24px;
-      right: 5vw;
-      z-index: 1001;
-      background: transparent;
-      border: 1px solid #bbb;
-      color: #bbb;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px;
-      font-weight: 300;
-      padding: 6px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 599px) {
-      #motion-btn { display: block; }
-    }
-
-    /* ── Responsive ──────────────────────────────────── */
+/* ── Responsive ──────────────────────────────────── */
     @media (max-width: 599px) {
       html, body { height: auto; overflow: auto; }
       body { cursor: auto; }
@@ -357,7 +335,6 @@
   <canvas id="rope-canvas"></canvas>
 
   <div class="block-overlay"></div>
-  <button id="motion-btn">enable tilt</button>
   <div class="jello-overlay">
     <video src="jello.mp4" autoplay loop muted playsinline></video>
   </div>
@@ -498,37 +475,33 @@
         active = true;
 
         function handleOrientation(e) {
-          tiltX = (e.gamma || 0);          // left-right: -90 to 90
-          tiltY = (e.beta  || 90) - 90;    // fwd-back adjusted for upright hold
+          // Normalize to -1..1 so gravity scale is viewport-independent
+          tiltX =  (e.gamma || 0) / 90;
+          tiltY = ((e.beta  || 90) - 90) / 90;
         }
-
-        const motionBtn = document.getElementById('motion-btn');
 
         function setupOrientation() {
           if (typeof DeviceOrientationEvent !== 'undefined' &&
               typeof DeviceOrientationEvent.requestPermission === 'function') {
-            // iOS 13+ — must be triggered from a button click
+            // iOS 13+ — request permission on first user interaction
             DeviceOrientationEvent.requestPermission()
-              .then(s => {
-                if (s === 'granted') window.addEventListener('deviceorientation', handleOrientation);
-                motionBtn.style.display = 'none';
-              })
+              .then(s => { if (s === 'granted') window.addEventListener('deviceorientation', handleOrientation); })
               .catch(() => {});
           } else {
             // Android / older iOS — no permission needed
             window.addEventListener('deviceorientation', handleOrientation);
-            motionBtn.style.display = 'none';
           }
         }
 
-        motionBtn.addEventListener('click', setupOrientation);
+        // Trigger on first tap anywhere — iOS treats click as a valid user gesture
+        document.addEventListener('click', setupOrientation, { once: true });
       }
 
       function updateMobileDot() {
-        dotVx += tiltX * 0.04;
-        dotVy += tiltY * 0.04;
-        dotVx *= 0.97;
-        dotVy *= 0.97;
+        dotVx += tiltX * 0.3;
+        dotVy += tiltY * 0.3;
+        dotVx *= 0.95;
+        dotVy *= 0.95;
         dotX  += dotVx;
         dotY  += dotVy;
 
