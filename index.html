@@ -549,16 +549,16 @@
 
   <div class="block-overlay"></div>
   <div class="jello-overlay">
-    <video src="jello.mp4" autoplay loop muted playsinline preload="auto"></video>
+    <video data-src="jello.mp4" autoplay loop muted playsinline preload="auto"></video>
   </div>
   <div class="lilguy-overlay">
     <video autoplay loop muted playsinline preload="auto">
-      <source src="lilguy.webm" type="video/webm">
-      <source src="lilguy.mp4" type="video/mp4">
+      <source data-src="lilguy.webm" type="video/webm">
+      <source data-src="lilguy.mp4" type="video/mp4">
     </video>
   </div>
   <div class="pixelation-overlay">
-    <video src="pixelation-tool.mp4" autoplay loop muted playsinline preload="auto"></video>
+    <video data-src="pixelation-tool.mp4" autoplay loop muted playsinline preload="auto"></video>
   </div>
   <div class="guppies-overlay">
     <img src="guppies.JPG" alt="guppies">
@@ -820,8 +820,25 @@
         lastX = null; lastY = null;
       });
 
-      // Force-load all videos immediately regardless of preload hint
-      document.querySelectorAll('video').forEach(v => v.load());
+      // Defer video loading — activate src after page has rendered
+      function loadVideos() {
+        document.querySelectorAll('video[data-src]').forEach(v => {
+          v.src = v.dataset.src;
+          v.load();
+        });
+        document.querySelectorAll('source[data-src]').forEach(s => {
+          s.src = s.dataset.src;
+          s.parentElement.load();
+        });
+      }
+      let videosLoaded = false;
+      function triggerVideoLoad() {
+        if (videosLoaded) return;
+        videosLoaded = true;
+        loadVideos();
+      }
+      setTimeout(triggerVideoLoad, 1500);
+      document.addEventListener('mousemove', triggerVideoLoad, { once: true });
 
       let frameCount = 0;
 
