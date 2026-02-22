@@ -820,25 +820,15 @@
         lastX = null; lastY = null;
       });
 
-      // Defer video loading — activate src after page has rendered
-      function loadVideos() {
-        document.querySelectorAll('video[data-src]').forEach(v => {
-          v.src = v.dataset.src;
-          v.load();
-        });
-        document.querySelectorAll('source[data-src]').forEach(s => {
-          s.src = s.dataset.src;
-          s.parentElement.load();
-        });
-      }
-      let videosLoaded = false;
-      function triggerVideoLoad() {
-        if (videosLoaded) return;
-        videosLoaded = true;
-        loadVideos();
-      }
-      setTimeout(triggerVideoLoad, 1500);
-      document.addEventListener('mousemove', triggerVideoLoad, { once: true });
+      // Load all videos immediately
+      document.querySelectorAll('video[data-src]').forEach(v => {
+        v.src = v.dataset.src;
+        v.load();
+      });
+      document.querySelectorAll('source[data-src]').forEach(s => {
+        s.src = s.dataset.src;
+        s.parentElement.load();
+      });
 
       let frameCount = 0;
 
