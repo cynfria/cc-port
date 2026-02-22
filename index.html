@@ -266,6 +266,37 @@
       border-radius: 4px;
     }
 
+    /* ── Crab overlay ───────────────────────────────── */
+    .crab-overlay {
+      position: fixed;
+      inset: 0;
+      background: #9AB193;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.hovering-crab .crab-overlay { opacity: 1; }
+
+    body.hovering-crab .bio,
+    body.hovering-crab .nav__col h2,
+    body.hovering-crab .nav__col ul li a { opacity: 0; }
+
+    body.hovering-crab #nav-crab {
+      opacity: 1;
+      color: #111;
+    }
+
+    .crab-overlay img {
+      max-width: 60vw;
+      max-height: 70vh;
+      border-radius: 4px;
+    }
+
     /* Page content sits above overlay so text remains interactive */
     .page {
       z-index: 501;
@@ -344,6 +375,9 @@
   <div class="pixelation-overlay">
     <video src="pixelation-tool.mp4" autoplay loop muted playsinline></video>
   </div>
+  <div class="crab-overlay">
+    <img src="crab.png" alt="6-7th century crab from peru">
+  </div>
 
   <main class="page">
     <section class="bio">
@@ -371,6 +405,10 @@
             <li><a href="https://will-it-jello.vercel.app/" target="_blank" id="nav-jello">will it jello</a></li>
             <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank" id="nav-lilguy">lil guy quiz</a></li>
             <li><a href="#">dog-e-dex</a></li>
+            <li><a href="#">guppies</a></li>
+            <li><a href="https://x.com/yescynfria/status/2016236887300776123" target="_blank" id="nav-crab">6-7th century crab</a></li>
+            <li><a href="#">scallion pillows</a></li>
+            <li><a href="#">asian snack rugs</a></li>
           </ul>
           <ul class="work-sub-list block-sub-list">
             <li>open source &amp; ai tooling</li>
@@ -576,6 +614,7 @@
         { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
         { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
         { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
+        { el: document.getElementById('nav-crab'),       cls: 'hovering-crab'      },
         { el: document.getElementById('nav-block'),     cls: 'hovering-block'     },
         { el: document.getElementById('nav-notion'),    cls: 'hovering-notion'    },
         { el: document.getElementById('nav-stripe'),    cls: 'hovering-stripe'    },
