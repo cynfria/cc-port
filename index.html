@@ -330,6 +330,37 @@
       border-radius: 4px;
     }
 
+    /* ── Dog-e-dex overlay ──────────────────────────── */
+    .dogedex-overlay {
+      position: fixed;
+      inset: 0;
+      background: #FFD8C8;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.hovering-dogedex .dogedex-overlay { opacity: 1; }
+
+    body.hovering-dogedex .bio,
+    body.hovering-dogedex .nav__col h2,
+    body.hovering-dogedex .nav__col ul li a { opacity: 0; }
+
+    body.hovering-dogedex #nav-dogedex {
+      opacity: 1;
+      color: #111;
+    }
+
+    .dogedex-overlay img {
+      max-height: 70vh;
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+
     /* ── Asian snack rugs overlay ───────────────────── */
     .snackrugs-overlay {
       position: fixed;
@@ -532,6 +563,10 @@
   <div class="scallion-overlay">
     <img src="scallion-pillows.JPG" alt="scallion pillows">
   </div>
+  <div class="dogedex-overlay">
+    <img src="dog-e-dex.PNG" alt="dog-e-dex app">
+  </div>
+
   <div class="snackrugs-overlay" id="snackrugs-overlay">
     <img class="rug-img" src="snack-rugs/white-rabbit.jpg"  style="left:22%;  top:0%;   width:18vw;">
     <img class="rug-img" src="snack-rugs/hello-panda.jpg"  style="left:44%;  top:11%;  width:19vw;">
@@ -573,7 +608,7 @@
             <li><a href="#" id="nav-pixelation">pixelation tool</a></li>
             <li><a href="https://will-it-jello.vercel.app/" target="_blank" id="nav-jello">will it jello</a></li>
             <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank" id="nav-lilguy">lil guy quiz</a></li>
-            <li><a href="#">dog-e-dex</a></li>
+            <li><a href="#" id="nav-dogedex">dog-e-dex</a></li>
             <li><a href="#" id="nav-guppies">guppies</a></li>
             <li><a href="https://x.com/yescynfria/status/2016236887300776123" target="_blank" id="nav-crab">6-7th century crab</a></li>
             <li><a href="#" id="nav-scallion">scallion pillows</a></li>
@@ -842,6 +877,7 @@
         { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
         { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
         { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
+        { el: document.getElementById('nav-dogedex'),    cls: 'hovering-dogedex'   },
         { el: document.getElementById('nav-snackrugs'),  cls: 'hovering-snackrugs' },
         { el: document.getElementById('nav-guppies'),    cls: 'hovering-guppies'   },
         { el: document.getElementById('nav-scallion'),   cls: 'hovering-scallion'  },
