@@ -396,6 +396,57 @@
       color: #fff;
     }
 
+    /* ── Easter egg ─────────────────────────────────── */
+    .easter-egg {
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .easter-egg { background: #0D0D0D; }
+      .easter-egg__message { color: #efefef; }
+      .easter-egg__return:hover { color: #efefef; }
+    }
+
+    body.easter-egg-active .easter-egg {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .easter-egg__message {
+      font-size: 14px;
+      font-weight: 300;
+      color: #111;
+    }
+
+    .easter-egg__cat {
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #E5500B;
+      text-align: left;
+    }
+
+    .easter-egg__return {
+      font-size: 14px;
+      font-weight: 300;
+      color: #bbb;
+      text-decoration: none;
+      transition: color 0.12s ease;
+    }
+
+    .easter-egg__return:hover { color: #111; }
+
     /* Sub-lists in second column */
     .nav__col-body {
       position: relative;
@@ -428,6 +479,12 @@
 </head>
 <body>
   <canvas id="rope-canvas"></canvas>
+
+  <div class="easter-egg" id="easter-egg">
+    <p class="easter-egg__message">wow you did it! here's a cat prize</p>
+    <pre class="easter-egg__cat" id="easter-cat"></pre>
+    <a href="#" class="easter-egg__return" id="easter-return">return to home</a>
+  </div>
 
   <div class="block-overlay"></div>
   <div class="jello-overlay">
@@ -641,6 +698,48 @@
         mouseY = dotY;
       }
 
+      // ── Easter egg ──────────────────────────────────
+      const easterEggEl  = document.getElementById('easter-egg');
+      const easterCatEl  = document.getElementById('easter-cat');
+      const easterReturn = document.getElementById('easter-return');
+      let easterTriggered = false;
+      let catInterval = null;
+      let catFrame = 0;
+
+      const catFrames = [
+        " /\\_/\\    \n( o.o )   \n > ^ <    \n\n●         ",
+        " /\\_/\\    \n( o.O )   \n > ^ <    \n\n  ●       ",
+        " /\\_/\\    \n( >.O )   \n >=^ <    \n\n   ●      ",
+        " /\\_/\\    \n( ^.^ )   \n > ^ <    \n\n     ●    ",
+        " /\\_/\\    \n( O.< )   \n < ^=<    \n\n       ●  ",
+        " /\\_/\\    \n( O.o )   \n > ^ <    \n\n          ●",
+        " /\\_/\\    \n( o.o )   \n > ^ <    \n\n       ●  ",
+        " /\\_/\\    \n( o.< )   \n < ^=<    \n\n     ●    ",
+      ];
+
+      function triggerEasterEgg() {
+        if (easterTriggered) return;
+        easterTriggered = true;
+        catFrame = 0;
+        easterCatEl.textContent = catFrames[0];
+        document.body.classList.add('easter-egg-active');
+        catInterval = setInterval(() => {
+          catFrame = (catFrame + 1) % catFrames.length;
+          easterCatEl.textContent = catFrames[catFrame];
+        }, 180);
+      }
+
+      easterReturn.addEventListener('click', e => {
+        e.preventDefault();
+        document.body.classList.remove('easter-egg-active');
+        clearInterval(catInterval);
+        easterTriggered = false;
+        nodes.length = 0;
+        lastX = null; lastY = null;
+      });
+
+      let frameCount = 0;
+
       function loop() {
         if (onMobile) updateMobileDot();
         ctx.clearRect(0, 0, W, H);
@@ -672,6 +771,21 @@
           ctx.font = '11px "Space Grotesk", sans-serif';
           ctx.fillStyle = '#E5500B';
           ctx.fillText('tap', mouseX + 10, mouseY + 4);
+        }
+
+        // Coverage detection — sample every 30 frames
+        frameCount++;
+        if (!easterTriggered && frameCount % 30 === 0 && nodes.length > 10) {
+          const data = ctx.getImageData(0, 0, W, H).data;
+          let painted = 0, total = 0;
+          const step = 8;
+          for (let y = 0; y < H; y += step) {
+            for (let x = 0; x < W; x += step) {
+              if (data[(y * W + x) * 4 + 3] > 10) painted++;
+              total++;
+            }
+          }
+          if (painted / total > 0.6) triggerEasterEgg();
         }
 
         requestAnimationFrame(loop);
