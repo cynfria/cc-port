@@ -534,6 +534,35 @@
 
     .easter-egg__return:hover { color: #111; }
 
+    /* ── Mobile overlay link ─────────────────────────── */
+    .mobile-overlay-link {
+      display: none;
+    }
+
+    @media (max-width: 599px) {
+      .mobile-overlay-link {
+        display: block;
+        position: fixed;
+        bottom: 6vh;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 502;
+        font-size: 12px;
+        font-weight: 300;
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      body.has-mobile-link .mobile-overlay-link {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+
     /* Sub-lists in second column */
     .nav__col-body {
       position: relative;
@@ -568,6 +597,8 @@
   <canvas id="rope-canvas"></canvas>
 
   <div id="easter-test" style="position:fixed;top:0;right:0;width:40px;height:40px;z-index:2000;cursor:default;"></div>
+
+  <a id="mobile-overlay-link" class="mobile-overlay-link" target="_blank" rel="noopener">open ↗</a>
 
   <div class="easter-egg" id="easter-egg">
     <p class="easter-egg__message">wow you did it!</p>
@@ -948,27 +979,30 @@
       rafId = requestAnimationFrame(loop);
 
       // ── Hover states (desktop: mouseenter/leave, mobile: tap toggle) ──
+      const mobileLink = document.getElementById('mobile-overlay-link');
+
       const hoverItems = [
-        { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
-        { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
-        { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
-        { el: document.getElementById('nav-stickpoke'),  cls: 'hovering-stickpoke' },
-        { el: document.getElementById('nav-dogedex'),    cls: 'hovering-dogedex'   },
-        { el: document.getElementById('nav-snackrugs'),  cls: 'hovering-snackrugs' },
-        { el: document.getElementById('nav-guppies'),    cls: 'hovering-guppies'   },
-        { el: document.getElementById('nav-scallion'),   cls: 'hovering-scallion'  },
-        { el: document.getElementById('nav-crab'),       cls: 'hovering-crab'      },
-        { el: document.getElementById('nav-block'),     cls: 'hovering-block'     },
-        { el: document.getElementById('nav-notion'),    cls: 'hovering-notion'    },
-        { el: document.getElementById('nav-stripe'),    cls: 'hovering-stripe'    },
-        { el: document.getElementById('nav-airbnb'),    cls: 'hovering-airbnb'    },
+        { el: document.getElementById('nav-lilguy'),     cls: 'hovering-lilguy',     href: 'https://lil-guy-quiz.vercel.app/'  },
+        { el: document.getElementById('nav-jello'),      cls: 'hovering-jello',      href: 'https://will-it-jello.vercel.app/' },
+        { el: document.getElementById('nav-pixelation'), cls: 'hovering-pixelation', href: null },
+        { el: document.getElementById('nav-stickpoke'),  cls: 'hovering-stickpoke',  href: null },
+        { el: document.getElementById('nav-dogedex'),    cls: 'hovering-dogedex',    href: null },
+        { el: document.getElementById('nav-snackrugs'),  cls: 'hovering-snackrugs',  href: null },
+        { el: document.getElementById('nav-guppies'),    cls: 'hovering-guppies',    href: null },
+        { el: document.getElementById('nav-scallion'),   cls: 'hovering-scallion',   href: null },
+        { el: document.getElementById('nav-crab'),       cls: 'hovering-crab',       href: 'https://x.com/yescynfria/status/2016236887300776123' },
+        { el: document.getElementById('nav-block'),      cls: 'hovering-block',      href: null },
+        { el: document.getElementById('nav-notion'),     cls: 'hovering-notion',     href: null },
+        { el: document.getElementById('nav-stripe'),     cls: 'hovering-stripe',     href: null },
+        { el: document.getElementById('nav-airbnb'),     cls: 'hovering-airbnb',     href: null },
       ];
 
       function clearAllHovers() {
         hoverItems.forEach(({ cls }) => document.body.classList.remove(cls));
+        document.body.classList.remove('has-mobile-link');
       }
 
-      hoverItems.forEach(({ el, cls }) => {
+      hoverItems.forEach(({ el, cls, href }) => {
         if (!el) return;
         // Desktop
         el.addEventListener('mouseenter', () => { clearAllHovers(); document.body.classList.add(cls); });
@@ -982,8 +1016,14 @@
           } else {
             clearAllHovers();
             document.body.classList.add(cls);
-            // Tap anywhere else to dismiss
-            document.addEventListener('touchend', clearAllHovers, { once: true });
+            if (mobileLink && href) {
+              mobileLink.href = href;
+              document.body.classList.add('has-mobile-link');
+            }
+            // Defer document listener so this tap doesn't immediately bubble and clear
+            setTimeout(() => {
+              document.addEventListener('touchend', clearAllHovers, { once: true });
+            }, 0);
           }
         });
       });
