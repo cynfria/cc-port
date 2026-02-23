@@ -994,15 +994,19 @@
         if (!colBody) return;
         const bodyTop = colBody.getBoundingClientRect().top;
 
-        const notionSubs = document.querySelector('.notion-sub-list');
-        if (notionSubs) notionSubs.style.top = (navNotion.getBoundingClientRect().top - bodyTop) + 'px';
-
-        const stripeSubs = document.querySelector('.stripe-sub-list');
-        if (stripeSubs) stripeSubs.style.top = (navStripe.getBoundingClientRect().top - bodyTop) + 'px';
-
-        const navAirbnb  = document.getElementById('nav-airbnb');
-        const airbnbSubs = document.querySelector('.airbnb-sub-list');
-        if (airbnbSubs) airbnbSubs.style.top = (navAirbnb.getBoundingClientRect().top - bodyTop) + 'px';
+        const pairs = [
+          { nav: 'nav-block',  sub: '.block-sub-list'  },
+          { nav: 'nav-notion', sub: '.notion-sub-list' },
+          { nav: 'nav-stripe', sub: '.stripe-sub-list' },
+          { nav: 'nav-airbnb', sub: '.airbnb-sub-list' },
+        ];
+        pairs.forEach(({ nav, sub }) => {
+          const navEl = document.getElementById(nav);
+          const subEl = document.querySelector(sub);
+          if (navEl && subEl) {
+            subEl.style.top = (navEl.getBoundingClientRect().top - bodyTop) + 'px';
+          }
+        });
       }
       alignSubLists();
       let resizeTimer;
