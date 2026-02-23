@@ -330,6 +330,34 @@
       border-radius: 4px;
     }
 
+    /* ── Stick and pokes overlay ────────────────────── */
+    .stickpoke-overlay {
+      position: fixed;
+      inset: 0;
+      background: #454545;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    body.hovering-stickpoke .stickpoke-overlay { opacity: 1; }
+
+    body.hovering-stickpoke .bio,
+    body.hovering-stickpoke .nav__col h2,
+    body.hovering-stickpoke .nav__col ul li a { opacity: 0; }
+
+    body.hovering-stickpoke #nav-stickpoke {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .stickpoke-overlay .poke-img {
+      position: absolute;
+      border-radius: 2px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
     /* ── Dog-e-dex overlay ──────────────────────────── */
     .dogedex-overlay {
       position: fixed;
@@ -569,6 +597,15 @@
   <div class="scallion-overlay">
     <img src="scallion-pillows.JPG" alt="scallion pillows">
   </div>
+  <div class="stickpoke-overlay">
+    <img class="poke-img" src="stick-n-poke/longlive.jpg" style="left:2%;  top:4%;  width:22vw;">
+    <img class="poke-img" src="stick-n-poke/heart.jpg"    style="left:31%; top:6%;  width:22vw;">
+    <img class="poke-img" src="stick-n-poke/snail.JPG"    style="left:68%; top:3%;  width:22vw;">
+    <img class="poke-img" src="stick-n-poke/geometry.jpg" style="left:4%;  top:54%; width:22vw;">
+    <img class="poke-img" src="stick-n-poke/oldman.jpg"   style="left:37%; top:52%; width:22vw;">
+    <img class="poke-img" src="stick-n-poke/trees.jpg"    style="left:71%; top:56%; width:22vw;">
+  </div>
+
   <div class="dogedex-overlay">
     <img src="dog-e-dex.jpg" alt="dog-e-dex app">
   </div>
@@ -614,6 +651,7 @@
             <li><a href="#" id="nav-pixelation">pixelation tool</a></li>
             <li><a href="https://will-it-jello.vercel.app/" target="_blank" id="nav-jello">will it jello</a></li>
             <li><a href="https://lil-guy-quiz.vercel.app/" target="_blank" id="nav-lilguy">lil guy quiz</a></li>
+            <li><a href="#" id="nav-stickpoke">stick and pokes</a></li>
             <li><a href="#" id="nav-dogedex">dog-e-dex</a></li>
             <li><a href="#" id="nav-guppies">guppies</a></li>
             <li><a href="https://x.com/yescynfria/status/2016236887300776123" target="_blank" id="nav-crab">6-7th century crab</a></li>
@@ -893,6 +931,7 @@
         { el: document.getElementById('nav-lilguy'),    cls: 'hovering-lilguy'    },
         { el: document.getElementById('nav-jello'),     cls: 'hovering-jello'     },
         { el: document.getElementById('nav-pixelation'),cls: 'hovering-pixelation'},
+        { el: document.getElementById('nav-stickpoke'),  cls: 'hovering-stickpoke' },
         { el: document.getElementById('nav-dogedex'),    cls: 'hovering-dogedex'   },
         { el: document.getElementById('nav-snackrugs'),  cls: 'hovering-snackrugs' },
         { el: document.getElementById('nav-guppies'),    cls: 'hovering-guppies'   },
