@@ -592,38 +592,38 @@
     </video>
   </div>
   <div class="guppies-overlay">
-    <img src="guppies.JPG" alt="guppies">
+    <img src="guppies.webp" alt="guppies">
   </div>
   <div class="scallion-overlay">
-    <img src="scallion-pillows.JPG" alt="scallion pillows">
+    <img src="scallion-pillows.webp" alt="scallion pillows">
   </div>
   <div class="stickpoke-overlay">
-    <img class="poke-img" src="stick-n-poke/longlive.jpg" style="left:2%;  top:4%;  width:22vw;">
-    <img class="poke-img" src="stick-n-poke/heart.jpg"    style="left:31%; top:6%;  width:22vw;">
-    <img class="poke-img" src="stick-n-poke/snail.JPG"    style="left:68%; top:3%;  width:22vw;">
-    <img class="poke-img" src="stick-n-poke/geometry.jpg" style="left:4%;  top:54%; width:22vw;">
-    <img class="poke-img" src="stick-n-poke/oldman.jpg"   style="left:37%; top:52%; width:22vw;">
-    <img class="poke-img" src="stick-n-poke/trees.jpg"    style="left:71%; top:56%; width:22vw;">
+    <img class="poke-img" src="stick-n-poke/longlive.webp" style="left:2%;  top:4%;  width:22vw;">
+    <img class="poke-img" src="stick-n-poke/heart.webp"   style="left:31%; top:6%;  width:22vw;">
+    <img class="poke-img" src="stick-n-poke/snail.webp"   style="left:68%; top:3%;  width:22vw;">
+    <img class="poke-img" src="stick-n-poke/geometry.webp"style="left:4%;  top:54%; width:22vw;">
+    <img class="poke-img" src="stick-n-poke/oldman.webp"  style="left:37%; top:52%; width:22vw;">
+    <img class="poke-img" src="stick-n-poke/trees.webp"   style="left:71%; top:56%; width:22vw;">
   </div>
 
   <div class="dogedex-overlay">
-    <img src="dog-e-dex.jpg" alt="dog-e-dex app">
+    <img src="dog-e-dex.webp" alt="dog-e-dex app">
   </div>
 
   <div class="snackrugs-overlay" id="snackrugs-overlay">
-    <img class="rug-img" src="snack-rugs/white-rabbit.jpg"  style="left:22%;  top:0%;   width:18vw;">
-    <img class="rug-img" src="snack-rugs/hello-panda.jpg"  style="left:44%;  top:11%;  width:19vw;">
-    <img class="rug-img" src="snack-rugs/milktea.JPG"      style="left:68%;  top:0%;   width:19vw;">
-    <img class="rug-img" src="snack-rugs/haw.jpg"          style="left:1%;   top:27%;  width:19vw;">
-    <img class="rug-img" src="snack-rugs/spam.jpeg"        style="left:52%;  top:47%;  width:21vw;">
-    <img class="rug-img" src="snack-rugs/yakult.JPG"       style="left:83%;  top:39%;  width:17vw;">
-    <img class="rug-img" src="snack-rugs/cup-noodle.JPG"  style="left:27%;  top:53%;  width:19vw;">
-    <img class="rug-img" src="snack-rugs/botan.JPG"        style="left:3%;   top:68%;  width:19vw;">
-    <img class="rug-img" src="snack-rugs/pocky.jpg"        style="left:76%;  top:69%;  width:24vw;">
+    <img class="rug-img" src="snack-rugs/white-rabbit.webp" style="left:22%;  top:0%;   width:18vw;">
+    <img class="rug-img" src="snack-rugs/hello-panda.webp" style="left:44%;  top:11%;  width:19vw;">
+    <img class="rug-img" src="snack-rugs/milktea.webp"     style="left:68%;  top:0%;   width:19vw;">
+    <img class="rug-img" src="snack-rugs/haw.webp"         style="left:1%;   top:27%;  width:19vw;">
+    <img class="rug-img" src="snack-rugs/spam.webp"        style="left:52%;  top:47%;  width:21vw;">
+    <img class="rug-img" src="snack-rugs/yakult.webp"      style="left:83%;  top:39%;  width:17vw;">
+    <img class="rug-img" src="snack-rugs/cup-noodle.webp"  style="left:27%;  top:53%;  width:19vw;">
+    <img class="rug-img" src="snack-rugs/botan.webp"       style="left:3%;   top:68%;  width:19vw;">
+    <img class="rug-img" src="snack-rugs/pocky.webp"       style="left:76%;  top:69%;  width:24vw;">
   </div>
 
   <div class="crab-overlay">
-    <img src="crab.jpg" alt="6-7th century crab from peru">
+    <img src="crab.webp" alt="6-7th century crab from peru">
   </div>
 
   <main class="page">
@@ -906,9 +906,9 @@
           ctx.fillText('tap', mouseX + 10, mouseY + 4);
         }
 
-        // Coverage detection — sample every 30 frames
+        // Coverage detection — sample every 90 frames
         frameCount++;
-        if (!easterTriggered && frameCount % 30 === 0 && nodes.length > 10) {
+        if (!easterTriggered && frameCount % 90 === 0 && nodes.length > 10) {
           const data = ctx.getImageData(0, 0, W, H).data;
           let painted = 0, total = 0;
           const step = 8;
@@ -921,10 +921,31 @@
           if (painted / total > 0.6) triggerEasterEgg();
         }
 
-        requestAnimationFrame(loop);
+        if (!idlePaused) rafId = requestAnimationFrame(loop);
       }
 
-      loop();
+      let rafId;
+      let idlePaused = false;
+      let idleTimer = null;
+
+      function pauseLoop() {
+        idlePaused = true;
+      }
+      function resumeLoop() {
+        if (idlePaused) {
+          idlePaused = false;
+          rafId = requestAnimationFrame(loop);
+        }
+        clearTimeout(idleTimer);
+        if (!onMobile) idleTimer = setTimeout(pauseLoop, 3000);
+      }
+
+      if (!onMobile) {
+        document.addEventListener('mousemove', resumeLoop);
+        idleTimer = setTimeout(pauseLoop, 3000);
+      }
+
+      rafId = requestAnimationFrame(loop);
 
       // ── Hover states (desktop: mouseenter/leave, mobile: tap toggle) ──
       const hoverItems = [
@@ -984,7 +1005,11 @@
         if (airbnbSubs) airbnbSubs.style.top = (navAirbnb.getBoundingClientRect().top - bodyTop) + 'px';
       }
       alignSubLists();
-      window.addEventListener('resize', alignSubLists);
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(alignSubLists, 150);
+      });
     })();
   </script>
 </body>
