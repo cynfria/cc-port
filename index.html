@@ -849,7 +849,10 @@
 
       // ── Mobile accelerometer dot ────────────────────
       const onMobile = window.matchMedia('(max-width: 599px)').matches;
-      if (onMobile) window.scrollTo(0, 0);
+      if (onMobile) {
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+      }
       let dotX = W * 0.08, dotY = H * 0.05;
       let dotVx = 0, dotVy = 0;
       let tiltX = 0, tiltY = 0;
