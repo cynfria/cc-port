@@ -611,12 +611,17 @@
       body.hovering-snackrugs  #nav-snackrugs,
       body.hovering-guppies    #nav-guppies,
       body.hovering-scallion   #nav-scallion,
-      body.hovering-crab       #nav-crab,
-      body.hovering-block      #nav-block,
-      body.hovering-notion     #nav-notion,
-      body.hovering-stripe     #nav-stripe,
-      body.hovering-airbnb     #nav-airbnb {
+      body.hovering-crab       #nav-crab {
         opacity: 0 !important;
+      }
+
+      /* Work items stay visible and white when sublist is open */
+      body.hovering-block  #nav-block,
+      body.hovering-notion #nav-notion,
+      body.hovering-stripe #nav-stripe,
+      body.hovering-airbnb #nav-airbnb {
+        opacity: 1 !important;
+        color: #fff !important;
       }
     }
 
