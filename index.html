@@ -1094,6 +1094,8 @@
         el.addEventListener('touchend', e => {
           if (!onMobile) return;
           e.preventDefault();
+          // If a different hover is already open, ignore — dismiss layer handles closing
+          if (document.body.classList.contains('mobile-hovering') && !document.body.classList.contains(cls)) return;
           if (document.body.classList.contains(cls)) {
             clearAllHovers();
           } else {
