@@ -42,6 +42,7 @@
       pointer-events: none;
       z-index: 1000;
       mix-blend-mode: hard-light;
+      transition: opacity 0.35s ease;
     }
 
     .page {
@@ -358,6 +359,22 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
 
+    @media (max-width: 599px) {
+      .stickpoke-overlay {
+        overflow-y: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 24px 16px 80px;
+        align-content: start;
+      }
+      .stickpoke-overlay .poke-img {
+        position: static;
+        width: 100% !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      }
+    }
+
     /* ── Dog-e-dex overlay ──────────────────────────── */
     .dogedex-overlay {
       position: fixed;
@@ -415,6 +432,22 @@
       position: absolute;
       border-radius: 2px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 599px) {
+      .snackrugs-overlay {
+        overflow-y: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+        padding: 24px 12px 80px;
+        align-content: start;
+      }
+      .snackrugs-overlay .rug-img {
+        position: static;
+        width: 100% !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
     }
 
     /* ── Crab overlay ───────────────────────────────── */
@@ -578,6 +611,9 @@
       body.hovering-airbnb     #nav-airbnb {
         opacity: 0 !important;
       }
+
+      /* Hide canvas trail when a hover overlay is active */
+      body.mobile-hovering #rope-canvas { opacity: 0; }
     }
 
     /* Sub-lists in second column */
@@ -1015,9 +1051,14 @@
         { el: document.getElementById('nav-airbnb'),     cls: 'hovering-airbnb',     href: null },
       ];
 
+      // On mobile, strip hrefs so taps never navigate (open ↗ handles that)
+      if (onMobile) {
+        hoverItems.forEach(({ el }) => { if (el) el.setAttribute('href', '#'); });
+      }
+
       function clearAllHovers() {
         hoverItems.forEach(({ cls }) => document.body.classList.remove(cls));
-        document.body.classList.remove('has-mobile-link');
+        document.body.classList.remove('has-mobile-link', 'mobile-hovering');
       }
 
       hoverItems.forEach(({ el, cls, href }) => {
@@ -1033,7 +1074,7 @@
             clearAllHovers();
           } else {
             clearAllHovers();
-            document.body.classList.add(cls);
+            document.body.classList.add(cls, 'mobile-hovering');
             if (mobileLink && href) {
               mobileLink.href = href;
               document.body.classList.add('has-mobile-link');
