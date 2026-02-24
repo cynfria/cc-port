@@ -884,8 +884,8 @@
         function handleOrientation(e) {
           // Calibrate to whatever angle the phone is held at on first event
           if (refBeta === null) { refBeta = e.beta; refGamma = e.gamma; }
-          tiltX = (e.gamma - refGamma) / 45;
-          tiltY = (e.beta  - refBeta)  / 45;
+          tiltX = (e.gamma - refGamma) / 20;
+          tiltY = (e.beta  - refBeta)  / 20;
         }
 
         function setupOrientation() {
