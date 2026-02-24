@@ -960,16 +960,103 @@
         " /\\_/\\    \n( o.< )   \n < ^=<    \n\n     ●    ",
       ];
 
+      // ── Noodle physics ──────────────────────────────
+      let noodles = [];
+      let noodleMode = false;
+      const NOODLE_GRAVITY  = 0.4;
+      const NOODLE_DAMPING  = 0.98;
+      const NOODLE_CHUNK    = 35;
+
+      function buildNoodles() {
+        // Downsample to keep performance reasonable
+        const maxPts = 700;
+        let src = nodes;
+        if (nodes.length > maxPts) {
+          const step = Math.ceil(nodes.length / maxPts);
+          src = nodes.filter((_, i) => i % step === 0);
+        }
+        noodles = [];
+        for (let i = 0; i < src.length; i += NOODLE_CHUNK) {
+          const pts = [];
+          for (let j = 0; j < NOODLE_CHUNK && i + j < src.length; j++) {
+            const n = src[i + j];
+            // Verlet: offset px/py to give random initial velocity burst
+            pts.push({
+              x: n.x, y: n.y,
+              px: n.x + (Math.random() - 0.5) * 10,
+              py: n.y - Math.random() * 6,
+            });
+          }
+          // Store rest lengths between consecutive points
+          for (let k = 0; k < pts.length - 1; k++) {
+            pts[k].rest = Math.hypot(pts[k+1].x - pts[k].x, pts[k+1].y - pts[k].y) || SEG_LEN;
+          }
+          if (pts.length >= 2) noodles.push(pts);
+        }
+      }
+
+      function updateNoodles() {
+        for (const noodle of noodles) {
+          // Verlet integration with gravity
+          for (const p of noodle) {
+            const vx = (p.x - p.px) * NOODLE_DAMPING;
+            const vy = (p.y - p.py) * NOODLE_DAMPING;
+            p.px = p.x; p.py = p.y;
+            p.x += vx;
+            p.y += vy + NOODLE_GRAVITY;
+            // Soft floor
+            if (p.y > H + 60) { p.y = H + 60; p.py = p.y + vy * 0.2; }
+          }
+          // Distance constraints — 2 iterations for soft noodle feel
+          for (let iter = 0; iter < 2; iter++) {
+            for (let i = 0; i < noodle.length - 1; i++) {
+              const a = noodle[i], b = noodle[i + 1];
+              const dx = b.x - a.x, dy = b.y - a.y;
+              const dist = Math.hypot(dx, dy) || 0.001;
+              const diff = (dist - a.rest) / dist * 0.5;
+              a.x += dx * diff; a.y += dy * diff;
+              b.x -= dx * diff; b.y -= dy * diff;
+            }
+          }
+        }
+      }
+
+      function drawNoodles() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.strokeStyle = '#E5500B';
+        ctx.lineWidth   = 80;
+        ctx.lineCap     = 'round';
+        ctx.lineJoin    = 'round';
+        for (const noodle of noodles) {
+          if (noodle.length < 2) continue;
+          ctx.beginPath();
+          ctx.moveTo(noodle[0].x, noodle[0].y);
+          for (let i = 1; i < noodle.length - 1; i++) {
+            const mx = (noodle[i].x + noodle[i+1].x) * 0.5;
+            const my = (noodle[i].y + noodle[i+1].y) * 0.5;
+            ctx.quadraticCurveTo(noodle[i].x, noodle[i].y, mx, my);
+          }
+          ctx.lineTo(noodle[noodle.length-1].x, noodle[noodle.length-1].y);
+          ctx.stroke();
+        }
+      }
+
       function triggerEasterEgg() {
         if (easterTriggered) return;
         easterTriggered = true;
-        catFrame = 0;
-        easterCatEl.textContent = catFrames[0];
-        document.body.classList.add('easter-egg-active');
-        catInterval = setInterval(() => {
-          catFrame = (catFrame + 1) % catFrames.length;
-          easterCatEl.textContent = catFrames[catFrame];
-        }, 180);
+        buildNoodles();
+        nodes.length = 0;
+        noodleMode = true;
+        // Show cat after noodles have fallen
+        setTimeout(() => {
+          catFrame = 0;
+          easterCatEl.textContent = catFrames[0];
+          document.body.classList.add('easter-egg-active');
+          catInterval = setInterval(() => {
+            catFrame = (catFrame + 1) % catFrames.length;
+            easterCatEl.textContent = catFrames[catFrame];
+          }, 180);
+        }, 2500);
       }
 
       document.getElementById('easter-test').addEventListener('click', triggerEasterEgg);
@@ -979,6 +1066,8 @@
         document.body.classList.remove('easter-egg-active');
         clearInterval(catInterval);
         easterTriggered = false;
+        noodleMode = false;
+        noodles.length = 0;
         nodes.length = 0;
         lastX = null; lastY = null;
       });
@@ -1001,6 +1090,13 @@
         if (onMobile && document.body.classList.contains('mobile-hovering')) {
           ctx.clearRect(0, 0, W, H);
           if (!idlePaused) rafId = requestAnimationFrame(loop);
+          return;
+        }
+        // Noodle physics mode
+        if (noodleMode) {
+          updateNoodles();
+          drawNoodles();
+          rafId = requestAnimationFrame(loop);
           return;
         }
         ctx.clearRect(0, 0, W, H);
