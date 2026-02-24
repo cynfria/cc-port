@@ -42,7 +42,6 @@
       pointer-events: none;
       z-index: 1000;
       mix-blend-mode: hard-light;
-      transition: opacity 0.35s ease;
     }
 
     .page {
@@ -567,19 +566,31 @@
 
     .easter-egg__return:hover { color: #111; }
 
-    /* ── Mobile floating link ────────────────────────── */
+    /* ── Mobile dismiss layer + floating link ───────── */
+    .mobile-dismiss,
     .mobile-overlay-link {
       display: none;
     }
 
     @media (max-width: 599px) {
+      /* Fullscreen tap-to-dismiss layer — blocks nav items, sits below "open ↗" */
+      .mobile-dismiss {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 502;
+        pointer-events: none;
+      }
+
+      body.mobile-hovering .mobile-dismiss { pointer-events: all; }
+
       .mobile-overlay-link {
         display: block;
         position: fixed;
         bottom: 6vh;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 502;
+        z-index: 503;
         font-size: 12px;
         font-weight: 300;
         color: rgba(255,255,255,0.8);
@@ -611,9 +622,6 @@
       body.hovering-airbnb     #nav-airbnb {
         opacity: 0 !important;
       }
-
-      /* Hide canvas trail when a hover overlay is active */
-      body.mobile-hovering #rope-canvas { opacity: 0; }
     }
 
     /* Sub-lists in second column */
@@ -651,6 +659,7 @@
 
   <div id="easter-test" style="position:fixed;top:0;right:0;width:40px;height:40px;z-index:2000;cursor:default;"></div>
 
+  <div id="mobile-dismiss" class="mobile-dismiss"></div>
   <a id="mobile-overlay-link" class="mobile-overlay-link" target="_blank" rel="noopener">open ↗</a>
 
   <div class="easter-egg" id="easter-egg">
@@ -960,6 +969,12 @@
 
       function loop() {
         if (onMobile) updateMobileDot();
+        // Don't draw trail while a hover overlay is open on mobile
+        if (onMobile && document.body.classList.contains('mobile-hovering')) {
+          ctx.clearRect(0, 0, W, H);
+          if (!idlePaused) rafId = requestAnimationFrame(loop);
+          return;
+        }
         ctx.clearRect(0, 0, W, H);
 
         if (nodes.length >= 2) {
@@ -1033,7 +1048,15 @@
       rafId = requestAnimationFrame(loop);
 
       // ── Hover states (desktop: mouseenter/leave, mobile: tap toggle) ──
-      const mobileLink = document.getElementById('mobile-overlay-link');
+      const mobileLink   = document.getElementById('mobile-overlay-link');
+      const mobileDismiss = document.getElementById('mobile-dismiss');
+
+      if (mobileDismiss) {
+        mobileDismiss.addEventListener('touchend', e => {
+          e.preventDefault();
+          clearAllHovers();
+        });
+      }
 
       const hoverItems = [
         { el: document.getElementById('nav-lilguy'),     cls: 'hovering-lilguy',     href: 'https://lil-guy-quiz.vercel.app/'  },
@@ -1074,15 +1097,13 @@
             clearAllHovers();
           } else {
             clearAllHovers();
+            nodes.length = 0;
+            ctx.clearRect(0, 0, W, H);
             document.body.classList.add(cls, 'mobile-hovering');
             if (mobileLink && href) {
               mobileLink.href = href;
               document.body.classList.add('has-mobile-link');
             }
-            // Defer document listener so this tap doesn't immediately bubble and clear
-            setTimeout(() => {
-              document.addEventListener('touchend', clearAllHovers, { once: true });
-            }, 0);
           }
         });
       });
