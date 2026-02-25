@@ -1172,7 +1172,7 @@
 
         if (active) {
           ctx.beginPath();
-          ctx.arc(mouseX, mouseY, 4, 0, Math.PI * 2);
+          ctx.arc(mouseX - 4, mouseY, 4, 0, Math.PI * 2);
           ctx.fillStyle = '#E5500B';
           ctx.fill();
         }
@@ -1180,7 +1180,7 @@
         if (onMobile && showTapHint) {
           ctx.font = '11px "Space Grotesk", sans-serif';
           ctx.fillStyle = '#E5500B';
-          ctx.fillText('tap', mouseX + 10, mouseY + 4);
+          ctx.fillText('tap', mouseX + 6, mouseY + 4);
         }
 
         // Coverage detection — sample every 90 frames
