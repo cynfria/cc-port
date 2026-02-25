@@ -963,10 +963,11 @@
       // ── Noodle physics ──────────────────────────────
       let noodles = [];
       let noodleMode = false;
-      const NOODLE_GRAVITY  = 0.4;
-      const NOODLE_DAMPING  = 0.995;
-      const NOODLE_BOUNCE   = 0.65;
-      const NOODLE_CHUNK    = 35;
+      let dragPoint  = null;
+      const NOODLE_DAMPING      = 0.988;
+      const NOODLE_CHUNK        = 35;
+      const NOODLE_REPEL_RADIUS = 150;
+      const NOODLE_REPEL_FORCE  = 8;
 
       function buildNoodles() {
         // Downsample to keep performance reasonable
@@ -979,13 +980,17 @@
         noodles = [];
         for (let i = 0; i < src.length; i += NOODLE_CHUNK) {
           const pts = [];
+          // Give each chunk a random initial drift direction
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 2 + Math.random() * 3;
+          const cvx = Math.cos(angle) * speed;
+          const cvy = Math.sin(angle) * speed;
           for (let j = 0; j < NOODLE_CHUNK && i + j < src.length; j++) {
             const n = src[i + j];
-            // Verlet: offset px/py to give random initial velocity burst
             pts.push({
               x: n.x, y: n.y,
-              px: n.x + (Math.random() - 0.5) * 10,
-              py: n.y - Math.random() * 6,
+              px: n.x - cvx + (Math.random() - 0.5) * 1.5,
+              py: n.y - cvy + (Math.random() - 0.5) * 1.5,
             });
           }
           // Store rest lengths between consecutive points
@@ -998,31 +1003,34 @@
 
       function updateNoodles() {
         for (const noodle of noodles) {
-          // Verlet integration with gravity + jiggle
           for (const p of noodle) {
+            // Skip physics for the dragged point — it follows the cursor
+            if (p === dragPoint) {
+              p.px = p.x; p.py = p.y;
+              p.x = mouseX; p.y = mouseY;
+              continue;
+            }
+
             const vx = (p.x - p.px) * NOODLE_DAMPING;
             const vy = (p.y - p.py) * NOODLE_DAMPING;
             p.px = p.x; p.py = p.y;
-            p.x += vx + (Math.random() - 0.5) * 0.6; // perpetual jiggle
-            p.y += vy + NOODLE_GRAVITY;
+            p.x += vx + (Math.random() - 0.5) * 0.5; // organic drift
+            p.y += vy + (Math.random() - 0.5) * 0.5;
 
-            // Bounce off floor
-            if (p.y > H) {
-              const vel = p.y - p.py;
-              p.y = H;
-              p.py = H + vel * NOODLE_BOUNCE;
+            // Cursor repulsion
+            const rdx = p.x - mouseX, rdy = p.y - mouseY;
+            const rdist = Math.hypot(rdx, rdy);
+            if (rdist < NOODLE_REPEL_RADIUS && rdist > 0) {
+              const force = (1 - rdist / NOODLE_REPEL_RADIUS) * NOODLE_REPEL_FORCE;
+              p.x += (rdx / rdist) * force;
+              p.y += (rdy / rdist) * force;
             }
-            // Bounce off walls
-            if (p.x < 0) {
-              const vel = p.x - p.px;
-              p.x = 0;
-              p.px = vel * NOODLE_BOUNCE;
-            }
-            if (p.x > W) {
-              const vel = p.x - p.px;
-              p.x = W;
-              p.px = W + vel * NOODLE_BOUNCE;
-            }
+
+            // Bounce off all four walls
+            if (p.x < 0)  { const v = p.x - p.px; p.x = 0; p.px = v * 0.6; }
+            if (p.x > W)  { const v = p.x - p.px; p.x = W; p.px = W + v * 0.6; }
+            if (p.y < 0)  { const v = p.y - p.py; p.y = 0; p.py = v * 0.6; }
+            if (p.y > H)  { const v = p.y - p.py; p.y = H; p.py = H + v * 0.6; }
           }
           // Distance constraints — 2 iterations for soft noodle feel
           for (let iter = 0; iter < 2; iter++) {
@@ -1037,6 +1045,33 @@
           }
         }
       }
+
+      // Drag: grab the closest noodle point on mousedown
+      document.addEventListener('mousedown', e => {
+        if (!noodleMode) return;
+        let closest = null, closestDist = 60;
+        for (const noodle of noodles) {
+          for (const p of noodle) {
+            const d = Math.hypot(p.x - e.clientX, p.y - e.clientY);
+            if (d < closestDist) { closestDist = d; closest = p; }
+          }
+        }
+        dragPoint = closest;
+      });
+      document.addEventListener('mouseup',   () => { dragPoint = null; });
+      document.addEventListener('touchstart', e => {
+        if (!noodleMode) return;
+        const t = e.touches[0];
+        let closest = null, closestDist = 80;
+        for (const noodle of noodles) {
+          for (const p of noodle) {
+            const d = Math.hypot(p.x - t.clientX, p.y - t.clientY);
+            if (d < closestDist) { closestDist = d; closest = p; }
+          }
+        }
+        dragPoint = closest;
+      }, { passive: true });
+      document.addEventListener('touchend',  () => { dragPoint = null; });
 
       function drawNoodles() {
         ctx.clearRect(0, 0, W, H);
@@ -1073,7 +1108,7 @@
             catFrame = (catFrame + 1) % catFrames.length;
             easterCatEl.textContent = catFrames[catFrame];
           }, 180);
-        }, 2500);
+        }, 1200);
       }
 
       document.getElementById('easter-test').addEventListener('click', triggerEasterEgg);
@@ -1084,6 +1119,7 @@
         clearInterval(catInterval);
         easterTriggered = false;
         noodleMode = false;
+        dragPoint = null;
         noodles.length = 0;
         nodes.length = 0;
         lastX = null; lastY = null;
