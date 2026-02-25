@@ -1138,13 +1138,13 @@
       let frameCount = 0;
 
       function loop() {
-        if (onMobile) updateMobileDot();
-        // Don't draw trail while a hover overlay is open on mobile
+        // Don't draw anything while a hover overlay is open on mobile
         if (onMobile && document.body.classList.contains('mobile-hovering')) {
           ctx.clearRect(0, 0, W, H);
           if (!idlePaused) rafId = requestAnimationFrame(loop);
           return;
         }
+        if (onMobile) updateMobileDot();
         // Noodle physics mode
         if (noodleMode) {
           updateNoodles();
@@ -1279,6 +1279,7 @@
             clearAllHovers();
             nodes.length = 0;
             ctx.clearRect(0, 0, W, H);
+            showTapHint = false;
             document.body.classList.add(cls, 'mobile-hovering');
             if (mobileLink && href) {
               mobileLink.href = href;
