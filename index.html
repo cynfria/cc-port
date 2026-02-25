@@ -391,6 +391,9 @@
         position: static;
         width: 100% !important;
       }
+      body.hovering-stickpoke .stickpoke-overlay {
+        z-index: 504;
+      }
     }
 
     /* ── Dog-e-dex overlay ──────────────────────────── */
@@ -465,6 +468,9 @@
       .snackrugs-overlay .rug-img {
         position: static;
         width: 100% !important;
+      }
+      body.hovering-snackrugs .snackrugs-overlay {
+        z-index: 504;
       }
     }
 
@@ -1278,6 +1284,22 @@
           }
         });
       });
+
+      // Tap-to-close on scrollable overlays (raised above dismiss layer on mobile)
+      if (onMobile) {
+        let scrollTouchStartY = 0;
+        ['.stickpoke-overlay', '.snackrugs-overlay'].forEach(sel => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          el.addEventListener('touchstart', e => {
+            scrollTouchStartY = e.touches[0].clientY;
+          }, { passive: true });
+          el.addEventListener('touchend', e => {
+            const dy = Math.abs(e.changedTouches[0].clientY - scrollTouchStartY);
+            if (dy < 10) clearAllHovers(); // tap, not scroll
+          });
+        });
+      }
 
       // Align sub-lists to their corresponding link's vertical position
       function alignSubLists() {
