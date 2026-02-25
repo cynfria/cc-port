@@ -964,6 +964,7 @@
       let noodles = [];
       let noodleMode = false;
       let dragPoint  = null;
+      let touchDragX = null, touchDragY = null;
       const NOODLE_DAMPING      = 0.988;
       const NOODLE_CHUNK        = 35;
       const NOODLE_REPEL_RADIUS = 150;
@@ -1004,10 +1005,11 @@
       function updateNoodles() {
         for (const noodle of noodles) {
           for (const p of noodle) {
-            // Skip physics for the dragged point — it follows the cursor
+            // Skip physics for the dragged point — follows touch or cursor
             if (p === dragPoint) {
               p.px = p.x; p.py = p.y;
-              p.x = mouseX; p.y = mouseY;
+              p.x = touchDragX !== null ? touchDragX : mouseX;
+              p.y = touchDragY !== null ? touchDragY : mouseY;
               continue;
             }
 
@@ -1062,6 +1064,7 @@
       document.addEventListener('touchstart', e => {
         if (!noodleMode) return;
         const t = e.touches[0];
+        touchDragX = t.clientX; touchDragY = t.clientY;
         let closest = null, closestDist = 80;
         for (const noodle of noodles) {
           for (const p of noodle) {
@@ -1071,7 +1074,15 @@
         }
         dragPoint = closest;
       }, { passive: true });
-      document.addEventListener('touchend',  () => { dragPoint = null; });
+      document.addEventListener('touchmove', e => {
+        if (!noodleMode) return;
+        const t = e.touches[0];
+        touchDragX = t.clientX; touchDragY = t.clientY;
+      }, { passive: true });
+      document.addEventListener('touchend', () => {
+        dragPoint = null;
+        touchDragX = null; touchDragY = null;
+      });
 
       function drawNoodles() {
         ctx.clearRect(0, 0, W, H);
@@ -1120,6 +1131,7 @@
         easterTriggered = false;
         noodleMode = false;
         dragPoint = null;
+        touchDragX = null; touchDragY = null;
         noodles.length = 0;
         nodes.length = 0;
         lastX = null; lastY = null;
