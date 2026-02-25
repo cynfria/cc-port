@@ -393,6 +393,7 @@
       }
       body.hovering-stickpoke .stickpoke-overlay {
         z-index: 504;
+        pointer-events: auto;
       }
     }
 
@@ -471,6 +472,7 @@
       }
       body.hovering-snackrugs .snackrugs-overlay {
         z-index: 504;
+        pointer-events: auto;
       }
     }
 
@@ -1257,6 +1259,7 @@
       function clearAllHovers() {
         hoverItems.forEach(({ cls }) => document.body.classList.remove(cls));
         document.body.classList.remove('has-mobile-link', 'mobile-hovering');
+        if (onMobile) { nodes.length = 0; ctx.clearRect(0, 0, W, H); }
       }
 
       hoverItems.forEach(({ el, cls, href }) => {
