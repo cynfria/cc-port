@@ -617,7 +617,7 @@
         z-index: 503;
         font-size: 14px;
         font-weight: 300;
-        color: rgba(255,255,255,0.8);
+        color: #ffffff;
         text-decoration: none;
         white-space: nowrap;
         opacity: 0;
@@ -629,6 +629,10 @@
         opacity: 1;
         pointer-events: all;
       }
+
+      /* Contrast overrides for light-background overlays */
+      body.hovering-lilguy  .mobile-overlay-link { color: #5c3a1e; }
+      body.hovering-dogedex .mobile-overlay-link { color: #7a3520; }
 
       /* Hide the active nav item when its hover state is open */
       body.hovering-lilguy     #nav-lilguy,
