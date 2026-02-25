@@ -1159,7 +1159,7 @@
               total++;
             }
           }
-          if (painted / total > 0.99) triggerEasterEgg();
+          if (painted / total >= 1.0) triggerEasterEgg();
         }
 
         if (!idlePaused) rafId = requestAnimationFrame(loop);
