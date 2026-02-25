@@ -964,7 +964,8 @@
       let noodles = [];
       let noodleMode = false;
       const NOODLE_GRAVITY  = 0.4;
-      const NOODLE_DAMPING  = 0.98;
+      const NOODLE_DAMPING  = 0.995;
+      const NOODLE_BOUNCE   = 0.65;
       const NOODLE_CHUNK    = 35;
 
       function buildNoodles() {
@@ -997,15 +998,31 @@
 
       function updateNoodles() {
         for (const noodle of noodles) {
-          // Verlet integration with gravity
+          // Verlet integration with gravity + jiggle
           for (const p of noodle) {
             const vx = (p.x - p.px) * NOODLE_DAMPING;
             const vy = (p.y - p.py) * NOODLE_DAMPING;
             p.px = p.x; p.py = p.y;
-            p.x += vx;
+            p.x += vx + (Math.random() - 0.5) * 0.6; // perpetual jiggle
             p.y += vy + NOODLE_GRAVITY;
-            // Soft floor
-            if (p.y > H + 60) { p.y = H + 60; p.py = p.y + vy * 0.2; }
+
+            // Bounce off floor
+            if (p.y > H) {
+              const vel = p.y - p.py;
+              p.y = H;
+              p.py = H + vel * NOODLE_BOUNCE;
+            }
+            // Bounce off walls
+            if (p.x < 0) {
+              const vel = p.x - p.px;
+              p.x = 0;
+              p.px = vel * NOODLE_BOUNCE;
+            }
+            if (p.x > W) {
+              const vel = p.x - p.px;
+              p.x = W;
+              p.px = W + vel * NOODLE_BOUNCE;
+            }
           }
           // Distance constraints — 2 iterations for soft noodle feel
           for (let iter = 0; iter < 2; iter++) {
