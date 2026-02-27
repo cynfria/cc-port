@@ -30,11 +30,11 @@
       inset: 0;
       pointer-events: none;
       z-index: 1000;
-      mix-blend-mode: normal;
+      mix-blend-mode: multiply;
     }
 
     @media (prefers-color-scheme: dark) {
-      #rope-canvas { z-index: 0; }
+      #rope-canvas { mix-blend-mode: normal; z-index: 0; }
     }
 
     .page {
