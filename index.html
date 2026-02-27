@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
   <title>cynthia chen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,21 +26,6 @@
       cursor: none;
     }
 
-    @media (prefers-color-scheme: dark) {
-      body { background: #0D0D0D; }
-
-      .bio__title { color: #efefef; }
-      .bio__sub   { color: #555; }
-
-      .nav__col h2          { color: #efefef; }
-      .nav__col ul li a     { color: #555; }
-      .nav__col ul li a:hover { color: #efefef; }
-
-      .easter-egg__message  { color: #efefef; }
-      .easter-egg__return   { color: rgba(255,255,255,0.35); }
-      .easter-egg__return:hover { color: #efefef; }
-      .easter-egg__doodle   { filter: invert(1); }
-    }
 
     #rope-canvas {
       position: fixed;
@@ -884,8 +870,7 @@
 
       // ── Mobile accelerometer dot ────────────────────
       const onMobile  = window.matchMedia('(max-width: 599px)').matches;
-      const isDark    = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const trailColor = isDark ? '#FF6B2B' : trailColor;
+      const trailColor = '#E5500B';
       if (onMobile) {
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
