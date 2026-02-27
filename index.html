@@ -35,8 +35,8 @@
       .nav__col ul li a       { color: #888; }
       .nav__col ul li a:hover { color: #efefef; }
 
-      /* multiply on dark = near-black; screen makes the gold glow */
-      #rope-canvas { mix-blend-mode: screen; }
+      /* normal blend + bottom layer so trail sits behind content */
+      #rope-canvas { mix-blend-mode: normal; z-index: 0; }
 
       .easter-egg__message       { color: #efefef; }
       .easter-egg__return        { color: rgba(255,255,255,0.4); }
