@@ -44,10 +44,6 @@
       mix-blend-mode: hard-light;
     }
 
-    @media (max-width: 599px) {
-      #rope-canvas { mix-blend-mode: multiply; }
-    }
-
     .page {
       position: fixed;
       inset: 0;
@@ -879,7 +875,7 @@
         }
       });
 
-      document.addEventListener('mouseleave', () => { if (!onMobile) active = false; });
+      document.addEventListener('mouseleave', () => { active = false; });
 
       // ── Mobile accelerometer dot ────────────────────
       const onMobile = window.matchMedia('(max-width: 599px)').matches;
@@ -919,8 +915,8 @@
           }
         }
 
-        // Trigger on first tap — use touchend because touchend+preventDefault blocks synthetic click
-        document.addEventListener('touchend', () => {
+        // Trigger on first tap anywhere — iOS treats click as a valid user gesture
+        document.addEventListener('click', () => {
           setupOrientation();
           showTapHint = false;
         }, { once: true });
