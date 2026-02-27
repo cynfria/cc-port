@@ -1097,7 +1097,7 @@
 
       function drawNoodles() {
         ctx.clearRect(0, 0, W, H);
-        ctx.strokeStyle = '#F2BD36';
+        ctx.strokeStyle = '#F29736';
         ctx.lineWidth   = 80;
         ctx.lineCap     = 'round';
         ctx.lineJoin    = 'round';
@@ -1178,7 +1178,7 @@
             ctx.quadraticCurveTo(nodes[i].x, nodes[i].y, mx, my);
           }
           ctx.lineTo(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y);
-          ctx.strokeStyle = '#F2BD36';
+          ctx.strokeStyle = '#F29736';
           ctx.lineWidth   = 80;
           ctx.lineCap     = 'round';
           ctx.lineJoin    = 'round';
@@ -1188,13 +1188,13 @@
         if (active) {
           ctx.beginPath();
           ctx.arc(mouseX - 4, mouseY, 4, 0, Math.PI * 2);
-          ctx.fillStyle = '#F2BD36';
+          ctx.fillStyle = '#F29736';
           ctx.fill();
         }
 
         if (onMobile && showTapHint) {
           ctx.font = '11px "Space Grotesk", sans-serif';
-          ctx.fillStyle = '#F2BD36';
+          ctx.fillStyle = '#F29736';
           ctx.fillText('tap', mouseX + 6, mouseY + 4);
         }
 
