@@ -44,6 +44,11 @@
       mix-blend-mode: hard-light;
     }
 
+    @media (max-width: 599px) {
+      /* hard-light on white = 2:1 contrast (invisible); normal = full #E5500B orange */
+      #rope-canvas { mix-blend-mode: normal; }
+    }
+
     .page {
       position: fixed;
       inset: 0;
@@ -875,7 +880,7 @@
         }
       });
 
-      document.addEventListener('mouseleave', () => { active = false; });
+      document.addEventListener('mouseleave', () => { if (!onMobile) active = false; });
 
       // ── Mobile accelerometer dot ────────────────────
       const onMobile = window.matchMedia('(max-width: 599px)').matches;
@@ -915,8 +920,8 @@
           }
         }
 
-        // Trigger on first tap anywhere — iOS treats click as a valid user gesture
-        document.addEventListener('click', () => {
+        // Use touchend (not click) — touchend+preventDefault blocks synthetic click on iOS
+        document.addEventListener('touchend', () => {
           setupOrientation();
           showTapHint = false;
         }, { once: true });
