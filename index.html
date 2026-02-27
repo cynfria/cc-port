@@ -1072,6 +1072,7 @@
       document.addEventListener('mouseup',   () => { dragPoint = null; });
       document.addEventListener('touchstart', e => {
         if (!noodleMode) return;
+        if (e.target === easterReturn) return;
         e.preventDefault();
         const t = e.touches[0];
         touchDragX = t.clientX; touchDragY = t.clientY;
