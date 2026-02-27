@@ -25,24 +25,6 @@
       cursor: none;
     }
 
-    @media (prefers-color-scheme: dark) {
-      body { background: #111; }
-
-      .bio__title { color: #FAFAFA; }
-      .bio__sub   { color: #626262; }
-
-      .nav__col h2            { color: #FAFAFA; }
-      .nav__col ul li a       { color: #626262; }
-      .nav__col ul li a:hover { color: #FAFAFA; }
-
-
-
-      .easter-egg__message       { color: #FAFAFA; }
-      .easter-egg__return        { color: #626262; }
-      .easter-egg__return:hover  { color: #FAFAFA; }
-      .easter-egg__doodle        { filter: invert(1); }
-    }
-
     #rope-canvas {
       position: fixed;
       inset: 0;
@@ -695,6 +677,22 @@
     body.hovering-stripe .stripe-sub-list,
     body.hovering-airbnb .airbnb-sub-list {
       opacity: 1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; }
+
+      .bio__title { color: #FAFAFA; }
+      .bio__sub   { color: #626262; }
+
+      .nav__col h2            { color: #FAFAFA; }
+      .nav__col ul li a       { color: #626262; }
+      .nav__col ul li a:hover { color: #FAFAFA; }
+
+      .easter-egg__message       { color: #FAFAFA; }
+      .easter-egg__return        { color: #626262; }
+      .easter-egg__return:hover  { color: #FAFAFA; }
+      .easter-egg__doodle        { filter: invert(1); }
     }
   </style>
 </head>
