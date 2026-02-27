@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="easter-egg-doodle.svg" as="image" type="image/svg+xml">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -1204,7 +1205,7 @@
 
         // Coverage detection — sample every 90 frames
         frameCount++;
-        if (!easterTriggered && frameCount % 45 === 0 && nodes.length > 10) {
+        if (!easterTriggered && frameCount % 90 === 0 && nodes.length > 10) {
           const data = ctx.getImageData(0, 0, W, H).data;
           let painted = 0, total = 0;
           const step = 8;
@@ -1214,7 +1215,7 @@
               total++;
             }
           }
-          if (painted / total >= 0.5) triggerEasterEgg();
+          if (painted / total >= 1.0) triggerEasterEgg();
         }
 
         if (!idlePaused) rafId = requestAnimationFrame(loop);
