@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>cynthia chen</title>
+  <title>cynthia chen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -25,6 +25,16 @@
       cursor: none;
     }
 
+    @media (prefers-color-scheme: dark) {
+      body { background: #0D0D0D; }
+
+      .bio__title { color: #efefef; }
+      .bio__sub   { color: #555; }
+
+      .nav__col h2          { color: #efefef; }
+      .nav__col ul li a     { color: #555; }
+      .nav__col ul li a:hover { color: #efefef; }
+    }
 
     #rope-canvas {
       position: fixed;
@@ -868,8 +878,7 @@
       document.addEventListener('mouseleave', () => { active = false; });
 
       // ── Mobile accelerometer dot ────────────────────
-      const onMobile  = window.matchMedia('(max-width: 599px)').matches;
-      const trailColor = '#E5500B';
+      const onMobile = window.matchMedia('(max-width: 599px)').matches;
       if (onMobile) {
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
@@ -1079,7 +1088,7 @@
 
       function drawNoodles() {
         ctx.clearRect(0, 0, W, H);
-        ctx.strokeStyle = trailColor;
+        ctx.strokeStyle = '#E5500B';
         ctx.lineWidth   = 80;
         ctx.lineCap     = 'round';
         ctx.lineJoin    = 'round';
@@ -1160,7 +1169,7 @@
             ctx.quadraticCurveTo(nodes[i].x, nodes[i].y, mx, my);
           }
           ctx.lineTo(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y);
-          ctx.strokeStyle = trailColor;
+          ctx.strokeStyle = '#E5500B';
           ctx.lineWidth   = 80;
           ctx.lineCap     = 'round';
           ctx.lineJoin    = 'round';
@@ -1170,13 +1179,13 @@
         if (active) {
           ctx.beginPath();
           ctx.arc(mouseX - 4, mouseY, 4, 0, Math.PI * 2);
-          ctx.fillStyle = trailColor;
+          ctx.fillStyle = '#E5500B';
           ctx.fill();
         }
 
         if (onMobile && showTapHint) {
           ctx.font = '11px "Space Grotesk", sans-serif';
-          ctx.fillStyle = trailColor;
+          ctx.fillStyle = '#E5500B';
           ctx.fillText('tap', mouseX + 6, mouseY + 4);
         }
 
