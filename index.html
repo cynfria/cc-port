@@ -1129,8 +1129,9 @@
 
       document.getElementById('easter-test').addEventListener('click', triggerEasterEgg);
 
-      easterReturn.addEventListener('click', e => {
+      function doReturn(e) {
         e.preventDefault();
+        e.stopPropagation();
         document.body.classList.remove('easter-egg-active');
         easterTriggered = false;
         noodleMode = false;
@@ -1139,7 +1140,9 @@
         noodles.length = 0;
         nodes.length = 0;
         lastX = null; lastY = null;
-      });
+      }
+      easterReturn.addEventListener('touchend', doReturn);
+      easterReturn.addEventListener('click', doReturn);
 
       // Load all videos immediately
       document.querySelectorAll('video[data-src]').forEach(v => {
