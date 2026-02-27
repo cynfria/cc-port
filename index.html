@@ -934,8 +934,8 @@
       function updateMobileDot() {
         const isStill = Math.abs(tiltX) < 0.1 && Math.abs(tiltY) < 0.1;
         if (!isStill) {
-          dotVx += tiltX * 1.2;
-          dotVy += tiltY * 1.2;
+          dotVx += tiltX * 0.7;
+          dotVy += tiltY * 0.7;
         }
         dotVx *= isStill ? 0.7 : 0.82;
         dotVy *= isStill ? 0.7 : 0.82;
