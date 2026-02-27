@@ -35,8 +35,7 @@
       .nav__col ul li a       { color: #888; }
       .nav__col ul li a:hover { color: #efefef; }
 
-      /* normal blend + bottom layer so trail sits behind content */
-      #rope-canvas { mix-blend-mode: normal; z-index: 0; }
+
 
       .easter-egg__message       { color: #efefef; }
       .easter-egg__return        { color: rgba(255,255,255,0.4); }
@@ -49,7 +48,11 @@
       inset: 0;
       pointer-events: none;
       z-index: 1000;
-      mix-blend-mode: multiply;
+      mix-blend-mode: normal;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #rope-canvas { z-index: 0; }
     }
 
     .page {
