@@ -1204,7 +1204,7 @@
 
         // Coverage detection — sample every 90 frames
         frameCount++;
-        if (!easterTriggered && frameCount % 90 === 0 && nodes.length > 10) {
+        if (!easterTriggered && frameCount % 45 === 0 && nodes.length > 10) {
           const data = ctx.getImageData(0, 0, W, H).data;
           let painted = 0, total = 0;
           const step = 8;
@@ -1214,7 +1214,7 @@
               total++;
             }
           }
-          if (painted / total >= 1.0) triggerEasterEgg();
+          if (painted / total >= 0.5) triggerEasterEgg();
         }
 
         if (!idlePaused) rafId = requestAnimationFrame(loop);
