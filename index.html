@@ -34,6 +34,11 @@
       .nav__col h2          { color: #efefef; }
       .nav__col ul li a     { color: #555; }
       .nav__col ul li a:hover { color: #efefef; }
+
+      .easter-egg__message  { color: #efefef; }
+      .easter-egg__return   { color: rgba(255,255,255,0.35); }
+      .easter-egg__return:hover { color: #efefef; }
+      .easter-egg__doodle   { filter: invert(1); }
     }
 
     #rope-canvas {
@@ -878,7 +883,9 @@
       document.addEventListener('mouseleave', () => { active = false; });
 
       // ── Mobile accelerometer dot ────────────────────
-      const onMobile = window.matchMedia('(max-width: 599px)').matches;
+      const onMobile  = window.matchMedia('(max-width: 599px)').matches;
+      const isDark    = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const trailColor = isDark ? '#FF6B2B' : trailColor;
       if (onMobile) {
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
@@ -1088,7 +1095,7 @@
 
       function drawNoodles() {
         ctx.clearRect(0, 0, W, H);
-        ctx.strokeStyle = '#E5500B';
+        ctx.strokeStyle = trailColor;
         ctx.lineWidth   = 80;
         ctx.lineCap     = 'round';
         ctx.lineJoin    = 'round';
@@ -1169,7 +1176,7 @@
             ctx.quadraticCurveTo(nodes[i].x, nodes[i].y, mx, my);
           }
           ctx.lineTo(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y);
-          ctx.strokeStyle = '#E5500B';
+          ctx.strokeStyle = trailColor;
           ctx.lineWidth   = 80;
           ctx.lineCap     = 'round';
           ctx.lineJoin    = 'round';
@@ -1179,13 +1186,13 @@
         if (active) {
           ctx.beginPath();
           ctx.arc(mouseX - 4, mouseY, 4, 0, Math.PI * 2);
-          ctx.fillStyle = '#E5500B';
+          ctx.fillStyle = trailColor;
           ctx.fill();
         }
 
         if (onMobile && showTapHint) {
           ctx.font = '11px "Space Grotesk", sans-serif';
-          ctx.fillStyle = '#E5500B';
+          ctx.fillStyle = trailColor;
           ctx.fillText('tap', mouseX + 6, mouseY + 4);
         }
 
