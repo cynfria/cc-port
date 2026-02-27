@@ -44,7 +44,7 @@
       mix-blend-mode: hard-light;
     }
 
-    @media (max-width: 599px) {
+    @media (pointer: coarse) {
       /* hard-light on white = 2:1 contrast (invisible); normal = full #E5500B orange */
       #rope-canvas { mix-blend-mode: normal; }
     }
@@ -883,7 +883,7 @@
       document.addEventListener('mouseleave', () => { if (!onMobile) active = false; });
 
       // ── Mobile accelerometer dot ────────────────────
-      const onMobile = window.matchMedia('(max-width: 599px)').matches;
+      const onMobile = window.matchMedia('(pointer: coarse)').matches;
       if (onMobile) {
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
