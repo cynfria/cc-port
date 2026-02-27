@@ -26,14 +26,22 @@
     }
 
     @media (prefers-color-scheme: dark) {
-      body { background: #0D0D0D; }
+      body { background: #111; }
 
       .bio__title { color: #efefef; }
-      .bio__sub   { color: #555; }
+      .bio__sub   { color: #888; }
 
-      .nav__col h2          { color: #efefef; }
-      .nav__col ul li a     { color: #555; }
+      .nav__col h2            { color: #efefef; }
+      .nav__col ul li a       { color: #888; }
       .nav__col ul li a:hover { color: #efefef; }
+
+      /* multiply on dark = near-black; screen makes the gold glow */
+      #rope-canvas { mix-blend-mode: screen; }
+
+      .easter-egg__message       { color: #efefef; }
+      .easter-egg__return        { color: rgba(255,255,255,0.4); }
+      .easter-egg__return:hover  { color: #efefef; }
+      .easter-egg__doodle        { filter: invert(1); }
     }
 
     #rope-canvas {
