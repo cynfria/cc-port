@@ -41,12 +41,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 1000;
-      mix-blend-mode: hard-light;
-    }
-
-    @media (pointer: coarse) {
-      /* hard-light on white = 2:1 contrast (invisible); normal = full #E5500B orange */
-      #rope-canvas { mix-blend-mode: normal; }
+      mix-blend-mode: multiply;
     }
 
     .page {
